@@ -1,5 +1,7 @@
 package messengasesApi.api_messenges.Model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +31,12 @@ public class Users{
     private String password;
     
     private String fullName;
+
+    private String language;
     
+    private Date createdDate;
+
+    private Date updatedDate;
+
     private boolean state;
 }

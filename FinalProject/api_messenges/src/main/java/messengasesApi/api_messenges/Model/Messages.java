@@ -25,6 +25,4 @@ public class Messages {
     private Chats chat;
 
     private String content;
-
-    private boolean state;
 }
