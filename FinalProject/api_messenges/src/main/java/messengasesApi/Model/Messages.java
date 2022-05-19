@@ -1,4 +1,4 @@
-package messageApi.api_messenges.Model;
+package messengasesApi.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
