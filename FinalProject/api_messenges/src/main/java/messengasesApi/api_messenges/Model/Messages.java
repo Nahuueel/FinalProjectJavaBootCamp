@@ -1,5 +1,4 @@
-package messengasesApi.Model;
-
+package messengasesApi.api_messenges.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,15 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Integrators {
+public class Messages {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public long id;
     
     @ManyToOne
     private Users user;
-    
+
     @ManyToOne
     private Chats chat;
-    
+
+    private String content;
+
     private boolean state;
 }

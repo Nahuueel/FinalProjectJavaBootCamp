@@ -1,11 +1,12 @@
-package messengasesApi.Model;
+package messengasesApi.api_messenges.Model;
 
-import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Chats {
+public class Integrators {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    private String name;
     
-    private Date date;
+    @ManyToOne
+    private Users user;
+    
+    @ManyToOne
+    private Chats chat;
     
     private boolean state;
 }
