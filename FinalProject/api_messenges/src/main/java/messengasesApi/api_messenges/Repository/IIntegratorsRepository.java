@@ -14,6 +14,6 @@ import messengasesApi.api_messenges.Model.Users;
 @Repository
 public interface IIntegratorsRepository extends JpaRepository<Integrators, Long>{
 
-	public List<Users> findByUserAndState(Users user, boolean states);
+	public List<Integrators> findByUserAndState(Users user, boolean states);
 	public List<Integrators> findByChatAndState(Chats chat, boolean state);
 }

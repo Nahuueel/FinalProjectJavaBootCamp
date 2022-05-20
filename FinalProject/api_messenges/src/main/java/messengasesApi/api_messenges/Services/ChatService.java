@@ -40,9 +40,8 @@ public class ChatService {
 		return chatRepo.findByNameAndState(name, true);
 	}
 	
-	public List<Users> getAllUser(Long chatId){
-		//return integratorsRepo.findByChatAndState(chatId, true);
-		if(!chatRepo.existsByIdAndState(chatId, true)) return new ArrayList<>();
+	public List<Users> getAllUserByChat(Long chatId){
+		if(!chatRepo.existsByIdAndState(chatId, true)) return null;
 		Chats chat = chatRepo.getByIdAndState(chatId, true);
 		List<Integrators> integrators = integratorsRepo.findByChatAndState(chat, true);
 		List<Users> users = new ArrayList<>();
@@ -51,7 +50,6 @@ public class ChatService {
 		}
 		return users;
 	}
-	
 
 	public boolean save(Chats user) {
 		if(chatRepo.existsByIdAndState(user.getId(), true)) {
