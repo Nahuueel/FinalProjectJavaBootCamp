@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -20,9 +21,11 @@ public class Integrators {
     private long id;
     
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
     
     @ManyToOne
+    @JoinColumn(name = "chat_id")
     private Chats chat;
     
     private boolean state;

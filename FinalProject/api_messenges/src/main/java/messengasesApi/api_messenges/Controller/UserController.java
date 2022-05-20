@@ -61,7 +61,7 @@ public class UserController {
 			return ResponseEntity.badRequest().body(chats);
 	}
 	
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<?> save(@RequestBody Users user){
 		
 		if(userService.save(user))
