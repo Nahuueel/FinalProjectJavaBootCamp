@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.Users;
+import messengasesApi.api_messenges.Services.ChatService;
+
 @RestController
 @RequestMapping("/api/chats")
 public class ChatController {
@@ -22,8 +26,8 @@ public class ChatController {
 	private ChatService chatService;
 	
 	@GetMapping
-	public ResponseEntity<List<Chat>> getAll(){
-		ArrayList<Chat> chats = chatService.getAll();
+	public ResponseEntity<List<Chats>> getAll(){
+		List<Chats> chats = chatService.getAll();
 		if(chats!=null) 
 			return ResponseEntity.ok().body(chats);
 		else 
@@ -31,17 +35,17 @@ public class ChatController {
 	}
 	
 	@GetMapping("/{id_chat}")
-	public ResponseEntity<Chat> get(@PathVariable("id_chat") long id){
-		ArrayList<Chat> chat = chatService.get(id);
+	public ResponseEntity<?> get(@PathVariable("id_chat") long id){
+		Chats chat = chatService.get(id);
 		if(chat!=null) 
 			return ResponseEntity.ok().body(chat);
 		else 
-			return ResponseEntity.badRequest().body(chat);	
+			return ResponseEntity.badRequest().body("Error");	
 	}
 	
 	@GetMapping("/byUsername")
-	public ResponseEntity<List<Chat>> getChatsByName(@RequestBody String name){
-		ArrayList<Chat> chats = chatService.getByName(name);
+	public ResponseEntity<List<Chats>> getChatsByName(@RequestBody String name){
+		List<Chats> chats = chatService.getByName(name);
 		if(chats!=null) 
 			return ResponseEntity.ok().body(chats);
 		else 
@@ -49,8 +53,8 @@ public class ChatController {
 	}
 	
 	@GetMapping("/usersFromChat/{id_chat}")
-	public ResponseEntity<List<User>> getUsersFromChat(@PathVariable("id_chat") long id){
-		ArrayList<User> users = chatService.getAllUser(id);
+	public ResponseEntity<List<Users>> getUsersFromChat(@PathVariable("id_chat") long id){
+		List<Users> users = chatService.getAllUserByChat(id);
 		if(users!=null) 
 			return ResponseEntity.ok().body(users);
 		else 
@@ -58,28 +62,28 @@ public class ChatController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<boolean> save(@RequestBody Chat chat){
+	public ResponseEntity<?> save(@RequestBody Chats chat){
 		
 		if(chatService.save(chat))
-			ResponseEntity.ok();
+			return ResponseEntity.ok().body("Chat Saved");
 		else 
-			ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 	
 	@PutMapping
-	public ResponseEntity<boolean> update(@RequestBody Chat chat){
-		if(userService.update(user))
-			ResponseEntity.ok();
+	public ResponseEntity<?> update(@RequestBody Chats chat){
+		if(chatService.update(chat))
+			return ResponseEntity.ok().body("Chat Updated");
 		else 
-			ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 	
 	@DeleteMapping("/{id_chat}")
-	public ResponseEntity<boolean> delete(@PathVariable("id_chat") long id ){
+	public ResponseEntity<?> delete(@PathVariable("id_chat") long id ){
 		
 		if(chatService.delete(id))
-			ResponseEntity.ok();
+			return ResponseEntity.ok().body("Chat Deleted");
 		else 
-			ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 }

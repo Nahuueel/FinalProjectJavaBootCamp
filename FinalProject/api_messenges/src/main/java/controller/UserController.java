@@ -1,6 +1,6 @@
 package controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.Users;
+import messengasesApi.api_messenges.Services.UserService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,7 +45,7 @@ public class UserController {
 	
 	@GetMapping("/allByFullName")
 	public ResponseEntity<List<Users>> getAllByFullName(@RequestBody String fullName){
-		ArrayList<Users> users = userService.getByFullname(fullName);
+		List<Users> users = userService.getAllByFullname(fullName);
 		if(!users.isEmpty())
 			return ResponseEntity.ok().body(users);
 		else 
@@ -50,7 +54,7 @@ public class UserController {
 	
 	@GetMapping("/chatsByUser/{id_user}")
 	public ResponseEntity<List<Chats>> getAllChatsByUser(@PathVariable("id_user") long id){
-		ArrayList<Chats> chats = userService.getChatByUser();
+		List<Chats> chats = userService.getAllChatsByUser(id);
 		if(!chats.isEmpty())
 			return ResponseEntity.ok().body(chats);
 		else 
@@ -58,30 +62,29 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<boolean> save(@RequestBody User user){
+	public ResponseEntity<?> save(@RequestBody Users user){
 		
 		if(userService.save(user))
-			return ResponseEntity.ok().body(user);
+			return ResponseEntity.ok().body("User Saved");
 		else 
-			return ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 	
 	@PutMapping
-	public ResponseEntity<boolean> update(@RequestBody User user){
+	public ResponseEntity<?> update(@RequestBody Users user){
 		
 		if(userService.update(user))
-			ResponseEntity.ok();
+			return ResponseEntity.ok().body("User Updated");
 		else 
-			ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 	
 	@DeleteMapping("/{id_user}")
-	public ResponseEntity<boolean> delete(@PathVariable("id_user") long id ){
-		
+	public ResponseEntity<?> delete(@PathVariable("id_user") long id ){
 		if(userService.delete(id))
-			ResponseEntity.ok();
+			return ResponseEntity.ok().body("User Deleted");
 		else 
-			ResponseEntity.badRequest();
+			return ResponseEntity.badRequest().body("Error");
 	}
 	
 	

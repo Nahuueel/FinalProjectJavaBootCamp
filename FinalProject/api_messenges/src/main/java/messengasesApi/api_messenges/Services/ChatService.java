@@ -33,7 +33,7 @@ public class ChatService {
 	}
 	
 	public Chats get(Long id) {
-		return chatRepo.getById(id);
+		return chatRepo.findByIdAndState(id,true);
 	}
 	
 	public List<Chats> getByName(String name){
