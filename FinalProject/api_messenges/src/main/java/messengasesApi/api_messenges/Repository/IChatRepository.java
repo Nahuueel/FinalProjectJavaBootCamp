@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.Users;
 
 
 @Repository
@@ -16,6 +17,8 @@ public interface IChatRepository extends JpaRepository<Chats, Long>{
 
 	@Query(value = "SELECT * FROM chats WHERE state = true", nativeQuery = true)
 	public List<Chats> findAll();
+	
+	public Chats findByIdAndState(long id, boolean state);
 
 	public boolean existsByIdAndState(long id, boolean state);
 
