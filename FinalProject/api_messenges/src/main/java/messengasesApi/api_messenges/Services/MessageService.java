@@ -1,6 +1,7 @@
 package messengasesApi.api_messenges.Services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,8 @@ public class MessageService {
 	}
 	
 	
-	public Messages get(Long id) {
-		return messageRepo.getById(id);
+	public Optional<Messages> get(Long id) {
+		return messageRepo.findById(id);
 	}
 	
 	public List<Messages> getByUser(Long userId) {
