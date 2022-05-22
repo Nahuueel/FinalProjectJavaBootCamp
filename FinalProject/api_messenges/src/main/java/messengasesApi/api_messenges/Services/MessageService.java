@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Messages;
+import messengasesApi.api_messenges.Model.Users;
+import messengasesApi.api_messenges.Repository.IChatRepository;
 import messengasesApi.api_messenges.Repository.IMessageRepository;
+import messengasesApi.api_messenges.Repository.IUserRepository;
 
 
 
@@ -16,6 +20,12 @@ public class MessageService {
 	@Autowired
 	private IMessageRepository messageRepo;
 	
+	@Autowired
+	private IUserRepository userRepo;
+
+	@Autowired 
+	private IChatRepository chatRepo;
+
 	public List<Messages> getAll(){
 		return messageRepo.findAll();
 	}
@@ -26,11 +36,15 @@ public class MessageService {
 	}
 	
 	public List<Messages> getByUser(Long userId) {
-		return messageRepo.findByUser(userId);
+		if(!userRepo.existsByIdAndState(userId, true)) return null;
+		Users user = userRepo.findByIdAndState(userId, true);
+		return messageRepo.findByUser(user);
 	}
 
 	public List<Messages> getAllByChat(Long chatId) {
-		return messageRepo.findByChat(chatId);
+		if(chatRepo.getByIdAndState(chatId, true) == null) return null;
+		Chats chat = chatRepo.getByIdAndState(chatId, true); 
+		return messageRepo.findByChat(chat);
 	}
 	
 

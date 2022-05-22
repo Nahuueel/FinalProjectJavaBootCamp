@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import messengasesApi.api_messenges.Model.Chats;
@@ -30,6 +33,11 @@ public class ChatService {
 	
 	public List<Chats> getAll(){
 		return chatRepo.findAll();
+	}
+
+	public Page<Chats> getAll(int index){
+		Pageable pageable = PageRequest.of(index, 10);
+		return chatRepo.findByState(true, pageable);
 	}
 	
 	public Chats get(Long id) {
