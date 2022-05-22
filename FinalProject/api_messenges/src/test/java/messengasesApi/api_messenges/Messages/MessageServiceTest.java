@@ -51,7 +51,7 @@ public class MessageServiceTest {
     @Test
     public void GET(){
         when(repositoryMock.getById(message.getId())).thenReturn(message);
-        Messages messageFound = service.get(message.getId());
+        Messages messageFound = service.get(message.getId()).get();
         assertNotNull(messageFound);
         assertEquals(messageFound, message);
     }
@@ -59,7 +59,7 @@ public class MessageServiceTest {
     @Test
     public void GET_NULL(){
         when(repositoryMock.getById(message.getId())).thenReturn(null);
-        Messages messageFound = service.get(message.getId());
+        Messages messageFound = service.get(message.getId()).get();
         assertNull(messageFound);
     }
 
