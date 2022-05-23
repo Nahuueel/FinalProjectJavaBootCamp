@@ -24,12 +24,12 @@ public class MessageController {
 	
 	@Autowired
 	private	MessageService msgService;
-	
+	/*
 	@GetMapping
 	public ResponseEntity<List<Messages>> getAll(){
 		return  ResponseEntity.ok().body(msgService.getAll());
 	}
-	
+	*/
 	@GetMapping("/{id_msg}")
 	public ResponseEntity<?> get(@PathVariable("id_msg") long id){
 		Optional<Messages> msg = msgService.get(id);

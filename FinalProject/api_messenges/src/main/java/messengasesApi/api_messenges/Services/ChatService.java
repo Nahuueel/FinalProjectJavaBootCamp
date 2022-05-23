@@ -3,6 +3,7 @@ package messengasesApi.api_messenges.Services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.integrator.spi.Integrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +55,20 @@ public class ChatService {
 	public boolean save(Chats user) {
 		if(chatRepo.existsByIdAndState(user.getId(), true)) {
 			return false;
+		} else {
+			chatRepo.save(user);
+			return true;
+		}	
+	}
+	
+	public boolean saveIntegrator(Integrators integrator) {
+		
+		if(integratorsRepo.existsByUserAndChat(integrator.getUser(),integrator.getChat())) {
+			return false;
+		} else {		
+			integratorsRepo.save(integrator);
+			return true;
 		}
-		chatRepo.save(user);
-		return true;
 	}
 	
 	

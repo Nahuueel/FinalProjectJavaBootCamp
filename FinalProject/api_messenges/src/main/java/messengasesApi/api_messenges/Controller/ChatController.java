@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.Integrators;
 import messengasesApi.api_messenges.Model.Users;
 import messengasesApi.api_messenges.Services.ChatService;
+import messengasesApi.api_messenges.Services.UserService;
 
 @RestController
 @RequestMapping("/api/chats")
@@ -24,6 +26,11 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
+	@Autowired
+	private UserService userService;
+	
+	
+	/*
 	@GetMapping
 	public ResponseEntity<List<Chats>> getAll(){
 		List<Chats> chats = chatService.getAll();
@@ -32,7 +39,7 @@ public class ChatController {
 		else 
 			return ResponseEntity.badRequest().body(chats);	
 	}
-	
+	*/
 	@GetMapping("/{id_chat}")
 	public ResponseEntity<?> get(@PathVariable("id_chat") long id){
 		Chats chat = chatService.get(id);
@@ -67,6 +74,19 @@ public class ChatController {
 			return ResponseEntity.ok().body("Chat Saved");
 		else 
 			return ResponseEntity.badRequest().body("Error");
+	}
+	
+	@PostMapping("/addUserToChat/{id_user}/{id_chat}")
+	public ResponseEntity<?> save(@PathVariable("id_user") long idUser, @PathVariable("id_chat") long idChat){
+		
+		Integrators integrator = new Integrators();
+		integrator.setUser(userService.get(idUser));
+		integrator.setChat(chatService.get(idChat));
+		if(chatService.saveIntegrator(integrator)) 
+			return ResponseEntity.ok().body("Ingrator saved");
+		else 
+			return ResponseEntity.badRequest().body("Error");
+			
 	}
 	
 	@PutMapping
