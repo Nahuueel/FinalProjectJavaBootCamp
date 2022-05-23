@@ -15,21 +15,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Messages;
+import messengasesApi.api_messenges.Model.Users;
+import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.MessageService;
+import messengasesApi.api_messenges.Services.UserService;
 
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController {
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private ChatService chatService;
+	
+	@Autowired
 	private	MessageService msgService;
-	/*
+	
 	@GetMapping
 	public ResponseEntity<List<Messages>> getAll(){
 		return  ResponseEntity.ok().body(msgService.getAll());
 	}
-	*/
 	@GetMapping("/{id_msg}")
 	public ResponseEntity<?> get(@PathVariable("id_msg") long id){
 		Optional<Messages> msg = msgService.get(id);
@@ -57,24 +66,39 @@ public class MessageController {
 			return ResponseEntity.badRequest().body(messages);
 	}
 	
-	@PostMapping
-	public ResponseEntity<?> save(@RequestBody Messages msg){
+	@PostMapping("/{id_user}/{id_chat}")
+	public ResponseEntity<?> save(@RequestBody String content, @PathVariable("id_user") long idUser, @PathVariable("id_chat") long idChat){
+		Users user = userService.get(idUser);
+		Chats chat = chatService.get(idChat);
+		Messages msg = new Messages();
+		
+		msg.setUser(user);
+		msg.setChat(chat);
+		msg.setContent(content);
 		
 		if(msgService.save(msg))
 			return ResponseEntity.ok().body("Message Saved");
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
-	
-	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Messages msg){
+	/*
+	@PutMapping("/{id_user}/{id_chat}")
+	public ResponseEntity<?> update(@RequestBody String content, @PathVariable("id_user") long idUser, @PathVariable("id_chat") long idChat){
+		Users user = userService.get(idUser);
+		Chats chat = chatService.get(idChat);
+		Messages msg = new Messages();
+		
+		msg.setUser(user);
+		msg.setChat(chat);
+		msg.setContent(content);
+		
 		
 		if(msgService.update(msg))
 			return ResponseEntity.ok().body("Message Updated");
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
-	
+	*/
 	@DeleteMapping("/{id_msg}")
 	public ResponseEntity<?> delete(@PathVariable("id_msg") long id ){
 		
