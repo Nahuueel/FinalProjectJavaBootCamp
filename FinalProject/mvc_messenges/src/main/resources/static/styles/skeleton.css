@@ -13,7 +13,7 @@
     grid-template: repeat(12, 1fr) / repeat(12, 1fr);
 }
 
-header{
+.header{
     align-self: start;
     grid-column: 1/13;
     padding: 12.5px 50px;
@@ -23,7 +23,7 @@ header{
 }
 
 
-main{
+.main{
     grid-column: 1/13;
     grid-row: 2/13;
     margin: 10px;

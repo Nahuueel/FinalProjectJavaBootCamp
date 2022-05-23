@@ -1,18 +1,18 @@
-<!DOCTYPE html 
+<!DOCTYPE html>
+<html lang="en"
     xmlns:th="http://thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:title_pattern="LAYOUT_TITLE - CONTENT_TITLE"></title>
-    <link rel="stylesheet" th:href="/styles/skeleton.css">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"></title>
+    <link rel="stylesheet" href="/styles/skeleton.css">
 </head>
 <body>
         <div class="grid-container">
-            <header layout:fragment="TITLE"></header>
-            <main layout:fragment="BODY"></main>
+            <header layout:fragment="TITLE" class="header"></header>
+            <main layout:fragment="BODY" class="main"></main>
         </div>
 </body>
 </html>
