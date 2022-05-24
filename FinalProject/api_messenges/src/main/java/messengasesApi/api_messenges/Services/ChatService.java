@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import messengasesApi.api_messenges.Model.Chats;
@@ -27,6 +30,10 @@ public class ChatService {
 	@Autowired
 	private IChatRepository chatRepo;
 	
+	
+	public List<Chats> getAll(){
+		return chatRepo.findAll();
+	}
 	
 	public Chats get(Long id) {
 		return chatRepo.findByIdAndState(id,true);
