@@ -3,7 +3,6 @@ package messengasesApi.api_messenges.Services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.integrator.spi.Integrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,21 +28,13 @@ public class ChatService {
 	private IChatRepository chatRepo;
 	
 	
-	public List<Chats> getAll(){
-		return chatRepo.findAll();
-	}
-	
 	public Chats get(Long id) {
 		return chatRepo.findByIdAndState(id,true);
 	}
 	
-	public List<Chats> getByName(String name){
-		return chatRepo.findByNameAndState(name, true);
-	}
-	
 	public List<Users> getAllUserByChat(Long chatId){
 		if(!chatRepo.existsByIdAndState(chatId, true)) return null;
-		Chats chat = chatRepo.getByIdAndState(chatId, true);
+		Chats chat = chatRepo.findByIdAndState(chatId, true);
 		List<Integrators> integrators = integratorsRepo.findByChatAndState(chat, true);
 		List<Users> users = new ArrayList<>();
 		for(Integrators integrator: integrators){
@@ -52,11 +43,11 @@ public class ChatService {
 		return users;
 	}
 
-	public boolean save(Chats user) {
-		if(chatRepo.existsByIdAndState(user.getId(), true)) {
+	public boolean save(Chats chat) {
+		if(chatRepo.existsByIdAndState(chat.getId(), true)) {
 			return false;
 		} else {
-			chatRepo.save(user);
+			chatRepo.save(chat);
 			return true;
 		}	
 	}

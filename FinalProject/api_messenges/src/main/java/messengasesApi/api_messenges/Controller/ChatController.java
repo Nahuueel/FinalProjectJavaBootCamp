@@ -30,16 +30,7 @@ public class ChatController {
 	private UserService userService;
 	
 	
-	/*
-	@GetMapping
-	public ResponseEntity<List<Chats>> getAll(){
-		List<Chats> chats = chatService.getAll();
-		if(chats!=null) 
-			return ResponseEntity.ok().body(chats);
-		else 
-			return ResponseEntity.badRequest().body(chats);	
-	}
-	*/
+	
 	@GetMapping("/{id_chat}")
 	public ResponseEntity<?> get(@PathVariable("id_chat") long id){
 		Chats chat = chatService.get(id);
@@ -49,22 +40,13 @@ public class ChatController {
 			return ResponseEntity.badRequest().body("Error");	
 	}
 	
-	@GetMapping("/byUsername")
-	public ResponseEntity<List<Chats>> getChatsByName(@RequestBody String name){
-		List<Chats> chats = chatService.getByName(name);
-		if(chats!=null) 
+	@GetMapping("/chatsByUser/{id_user}")
+	public ResponseEntity<List<Chats>> getAllChatsByUser(@PathVariable("id_user") long id){
+		List<Chats> chats = userService.getAllChatsByUser(id);
+		if(!chats.isEmpty())
 			return ResponseEntity.ok().body(chats);
 		else 
 			return ResponseEntity.badRequest().body(chats);
-	}
-	
-	@GetMapping("/usersFromChat/{id_chat}")
-	public ResponseEntity<List<Users>> getUsersFromChat(@PathVariable("id_chat") long id){
-		List<Users> users = chatService.getAllUserByChat(id);
-		if(users!=null) 
-			return ResponseEntity.ok().body(users);
-		else 
-			return ResponseEntity.badRequest().body(users);
 	}
 	
 	@PostMapping

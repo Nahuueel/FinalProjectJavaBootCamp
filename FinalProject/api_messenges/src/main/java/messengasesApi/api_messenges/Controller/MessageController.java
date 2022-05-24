@@ -35,10 +35,7 @@ public class MessageController {
 	@Autowired
 	private	MessageService msgService;
 	
-	@GetMapping
-	public ResponseEntity<List<Messages>> getAll(){
-		return  ResponseEntity.ok().body(msgService.getAll());
-	}
+
 	@GetMapping("/{id_msg}")
 	public ResponseEntity<?> get(@PathVariable("id_msg") long id){
 		Optional<Messages> msg = msgService.get(id);
@@ -50,7 +47,7 @@ public class MessageController {
 	
 	@GetMapping("/byUser/{id_user}")
 	public ResponseEntity<List<Messages>> getAllByUser(@PathVariable("id_user") long id){
-		List<Messages> messages = msgService.getByUser(id);
+		List<Messages> messages = msgService.getAllByUser(id);
 		if(messages != null)
 			return ResponseEntity.ok().body(messages);
 		else 
@@ -81,24 +78,7 @@ public class MessageController {
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
-	/*
-	@PutMapping("/{id_user}/{id_chat}")
-	public ResponseEntity<?> update(@RequestBody String content, @PathVariable("id_user") long idUser, @PathVariable("id_chat") long idChat){
-		Users user = userService.get(idUser);
-		Chats chat = chatService.get(idChat);
-		Messages msg = new Messages();
-		
-		msg.setUser(user);
-		msg.setChat(chat);
-		msg.setContent(content);
-		
-		
-		if(msgService.update(msg))
-			return ResponseEntity.ok().body("Message Updated");
-		else 
-			return ResponseEntity.badRequest().body("Error");
-	}
-	*/
+
 	@DeleteMapping("/{id_msg}")
 	public ResponseEntity<?> delete(@PathVariable("id_msg") long id ){
 		
