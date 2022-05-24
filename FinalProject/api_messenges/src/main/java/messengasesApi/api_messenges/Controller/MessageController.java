@@ -36,7 +36,7 @@ public class MessageController {
 	public ResponseEntity<?> get(@PathVariable("id_msg") long id){
 		Optional<Messages> msg = msgService.get(id);
 		if(msg != null)
-			return ResponseEntity.ok().body(msg.get().getMessageTraduced(msg.get().getContent()));
+			return ResponseEntity.ok().body(msg.get().getMessageTraduced());
 		else
 			return ResponseEntity.badRequest().body("Error");
 	}

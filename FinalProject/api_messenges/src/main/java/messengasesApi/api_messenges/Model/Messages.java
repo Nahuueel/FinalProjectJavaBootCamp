@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.google.cloud.translate.*;
+import com.google.cloud.translate.Translate.TranslateOption;
 
 @Data
 @NoArgsConstructor
@@ -32,9 +33,13 @@ public class Messages {
     private String content;
     
     
-    public String getMessageTraduced(String mensaje) {
-    	Translate translate = TranslateOptions.getDefaultInstance().getService();
-    	Translation traduccion = translate.translate(mensaje);
+    public String getMessageTraduced() {
+    	Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyCZsohvyk3oB4aJdKNnjwYK02wKq2z7UvY").build().getService();
+    	Detection deteccion = translate.detect(this.content);
+    	String lenguajeMensaje = deteccion.getLanguage();
+    	Translation traduccion = translate.translate(this.content,
+    			TranslateOption.sourceLanguage(lenguajeMensaje),
+    			TranslateOption.targetLanguage(this.user.getLanguage()));
     	return traduccion.getTranslatedText();
     	
     }
