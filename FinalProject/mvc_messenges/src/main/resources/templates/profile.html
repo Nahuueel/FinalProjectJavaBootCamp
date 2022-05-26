@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{./skeletons/skeleton}">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile</title>
+        <link rel="stylesheet" href="/styles/index.css">
+        <style>
+            .profile{
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div layout:fragment="TITLE">
+            <h1>
+                Profile
+            </h1>
+            <a class="profile" href="./chats.html">
+                <i>
+                    Go back
+                </i>
+            </a>
+        </div>
+        <div layout:fragment="BODY">
+             <form>
+                    <div class="field-container">
+                        <label>
+                            FullName
+                        </label>
+                        <input type="text" />
+                    </div>
+                    <div class="field-container">
+                        <label>
+                            Username
+                        </label>
+                        <input type="username" />
+                    </div>
+                    <div class="field-container">
+                        <label>
+                            Password
+                        </label>
+                        <input type="password" />
+                    </div>
+                    <div class="field-container">
+                        <label>Language</label>
+                        <select>
+                            <option value="SPANISH">Spanish</option>
+                            <option value="PORTUGUESE">Portuguese</option>
+                            <option value="ENGLISH" selected>English</option>
+                            <option value="GERMANY">Germany</option>
+                            <option value="ITALIAN">Italian</option>
+                            <option value="FRENCH">French</option>
+                            <option value="RUSSIAN">Rusian</option>
+                            <option value="CHINESE">Chinese</option>
+                            <option value="TURKISH">Turkish</option>
+                            <option value="JAPANESE">Japanese</option>
+                        </select>
+                    </div>
+                    <button class="button-up" type="submit">
+                        Modify
+                    </button>
+                    <button class="button-down">
+                        Delete
+                    </button>
+            </form>
+        </div>
+    </body>
+</html>
