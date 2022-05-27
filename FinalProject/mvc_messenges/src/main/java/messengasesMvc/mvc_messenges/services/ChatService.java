@@ -1,11 +1,14 @@
 package messengasesMvc.mvc_messenges.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.UserModel;
 
 @Service
 public class ChatService {
@@ -13,7 +16,18 @@ public class ChatService {
 	@Autowired
 	private RestTemplate fetch;
 	
-	private StringBuilder url = new StringBuilder("http://localhost:8080/api/chat");
+	private StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
+	
+	
+	public ChatModel getChatByUser(UserModel user) {
+		ResponseEntity<ChatModel> response = fetch.getForEntity(url.append("/" + user.getId()).toString(), ChatModel.class);
+		return response.getBody();
+	}
+	
+	public List<ChatModel> getChatFromUser(UserModel user){
+		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/usersFromChats/" + user.getId()).toString(), Mapper.class);
+		return response.getBody().getListaChats();
+	}
 	
 	
 	public ChatModel getChatById(long id) {
