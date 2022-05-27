@@ -28,9 +28,9 @@ public class LetterService {
 		return response.getBody().getListaMensaje();
 	}
 	
-	public LetterModel getLetterByUser(UserModel user) {
-		ResponseEntity<LetterModel> response = fetch.getForEntity(url.append("/byUser/" + user.getId()).toString(), LetterModel.class);
-		return response.getBody();
+	public List<LetterModel> getLetterByUser(UserModel user) {
+		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/byUser/" + user.getId()).toString(), Mapper.class);
+		return response.getBody().getListaMensaje();
 	}
 	
 	public LetterModel getLetterById(long id) {
