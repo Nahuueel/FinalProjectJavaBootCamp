@@ -78,7 +78,6 @@ public class MessageController {
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
-
 	@DeleteMapping("/{id_msg}")
 	public ResponseEntity<?> delete(@PathVariable("id_msg") long id ){
 		
