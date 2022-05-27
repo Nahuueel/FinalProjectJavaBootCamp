@@ -154,6 +154,10 @@
     color: white;
 }
 
+.contacts-dropdown span{
+    display: none;
+}
+
 @media (max-width:914px){
     .contacts{
         grid-column: 1/11;
@@ -187,4 +191,22 @@
     .previus-contact, .next-contact{
         margin:0px;
     }
-}}
+
+    .contacts-dropdown span{
+        display: inline-block;
+        text-align: center;
+        font-size: 1.25em;
+    }
+
+    .contacts-content{
+        display:none;
+    }
+
+    .contacts-dropdown:hover .contacts-content{
+        display: flex;
+        border-radius: 5px;
+    }
+    .contacts-dropdown:hover span{
+        color: blueviolet;
+    }
+}
