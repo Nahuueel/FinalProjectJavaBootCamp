@@ -16,17 +16,12 @@ import messengasesApi.api_messenges.Model.Users;
 
 @Repository
 public interface IChatRepository extends JpaRepository<Chats, Long>{
-
-	@Query(value = "SELECT * FROM chats WHERE state = true", nativeQuery = true)
-	public List<Chats> findAll();
 	
 	public Chats findByIdAndState(long id, boolean state);
 
 	public Page<Chats> findByState(boolean state, Pageable page);
 
 	public boolean existsByIdAndState(long id, boolean state);
-
-	public Chats getByIdAndState(long id, boolean state);
 
 	@Modifying
 	@Query(value = "UPDATE chats SET state = false WHERE id = :id", nativeQuery = true)

@@ -25,7 +25,7 @@ import messengasesApi.api_messenges.Services.MessageService;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class MessageServiceTest {
-    
+    /*
     @InjectMocks
     private MessageService service;
 
@@ -66,4 +66,5 @@ public class MessageServiceTest {
     public void GET_BY_USER(){
         
     }
+    */
 }

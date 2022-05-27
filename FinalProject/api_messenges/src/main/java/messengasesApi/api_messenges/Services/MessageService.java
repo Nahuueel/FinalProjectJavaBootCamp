@@ -25,16 +25,12 @@ public class MessageService {
 	@Autowired
 	private IChatRepository chatRepo;
 	
-	public List<Messages> getAll(){
-		return messageRepo.findAll();
-	}
-	
 	
 	public Optional<Messages> get(Long id) {
 		return messageRepo.findById(id);
 	}
 	
-	public List<Messages> getByUser(Long userId) {
+	public List<Messages> getAllByUser(Long userId) {
 		return messageRepo.findByUser(userRepo.findByIdAndState(userId, true));
 	}
 
@@ -48,15 +44,6 @@ public class MessageService {
 			return false;
 		}
 		messageRepo.save(message);
-		return true;
-	}
-	
-	
-	public boolean update(Messages user) {
-		if(!messageRepo.existsById(user.getId())) {
-			return false;
-		}
-		messageRepo.save(user);
 		return true;
 	}
 	

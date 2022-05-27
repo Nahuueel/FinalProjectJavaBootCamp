@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "clear-rock-351114",
+  "private_key_id": "2b656d3d5a98c81eed058cdb341fc5c233eee69f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDanRVMDJAHDWOm\nNh2SFl4PVbfsxrZ8CRlkn9kVqZ0sbedAW62xc3YpnDCVgPzCVPN3RQiYso1r7TfF\nVTwgetZDmllZDasfY1+VtonTh2ZKrjayP1ow6k6Py6kgAoC6D0MeA+k9i4NFVynU\nCvNeK1tjLN4AdJWnMwPIS8C+P9m1ibQiDOifAbTS6HRDNXP8O/VEjgMxHwzo+Yls\n8N8s84VPcUtREqzgrlMQNt60Z4iFo7tmk0uAGYVNUyENyxE8rQtpnl8BDOu/IMKn\nW9qXygwkLrWJYpOh2ll2PGOBHBprKfsR4GW/NCYD0jNYp4j3lKQiknWKBuMcNF8k\n12bBXGAVAgMBAAECggEAAVDhwG/w7AHyIB2CRw9YaJo4/bVigtOhMgBeU6mONybA\nNhx3KrLJus1kY3n/y4GsZ4LkXtrwS/6FD+yH7KAgqw6CTC1vYsR73lBXewz9GiT7\nUk5cUiAO8gGlVnp9YOFXo5YdcM/mreOs7khUl7QGHE44VeNdxUBi3PFLyzliK5wS\nPm3wG05Gbggm+L4+9vXJSJ1v7ptDONs3+e8UMgSHWwewU8bxMnQZ8JfTG4XtslyG\nIxtEwc8RT9WRondhCZjXW3fwwQVrT53z17pThltOa8T4BlpiRuxORLV7MMK7ebRf\nIX2QZQ0dZgLEA5qNeLGtHNFrIHI4vxYKsAlMhq7yDwKBgQD1PlNSiDyE6BTAMXqQ\n/u3+t1OsUqg0KABTdgPFOSIBMrgX3p3DlL2KflUiXI0Mgb6j6pdONZB0VndT7yS5\nUCUUGntXdAv8YU9ZraYQO6a85smdcMqdROYs8Bwe+O+lxOXNdgZjoD1pRORKrq0V\nzy9ZMKy0QPOBhhrmZVsKAFQsSwKBgQDkM7+6RT61ElumgoBZSL2+e+NaaOIHuTmQ\nENjmn/ZDLoo/JluevPviZo6LH7LB6SVWBUrsC2EURce0cBSoZ+e2N0IIjJEa0iDt\n4zZwCnu1ElAjPkpU6BgQnFoWTSv6XlXOToDbHFymmdWO33id052M0HUz6HwOpiK0\nEuGNwlkpHwKBgQC2d3XVLUoh9O8jhGzWHucConId/63oiG6dqmvpvLWBQLRaBidJ\nkoxn09ER7NyBFrO6D9wds5rUBFVqXL7tJiVATOfCTLRyRhCc/6dT4p4PZINToc0O\nsGm1u7ygisT7iIEWmp7sVxf6D+jvbAGZ/XoUGTQWNVE36IhxLa5Lxaza+wKBgFj7\nwNBOfgQ3U1ubWZb3IV3sixvO+AxQ8pw1pY5QY8OQm0HCoElGoeWHXh/rzVWFpxRi\n3fMrAMDZ8ORwK+37DkRkSbBxt4dA1qxMRAbuX4ycxnjnqi5vjiqz/QDjOLnZHRZk\nUCSga5RfOgILK8pHIREum/UQu4cuyytyjVcsqH27AoGBAN8v0/k6iCs4On7eq3MS\nMEbTQnRNyJzcLrC3sklulF+GnkimAAV+Lp6PNtOAno1KoVeKiHt4baHbtR+h6xpM\nhgkfMcky+YvwyRQBd4fhvsyoRzD8YRGz9iVv2+A7Q15226+nqYeEEPKCa6qpjC49\nBj5ErYsHnzrNG/Ib18Hl0z62\n-----END PRIVATE KEY-----\n",
+  "client_email": "traductorcasero@clear-rock-351114.iam.gserviceaccount.com",
+  "client_id": "111559540524581885571",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/traductorcasero%40clear-rock-351114.iam.gserviceaccount.com"
+}

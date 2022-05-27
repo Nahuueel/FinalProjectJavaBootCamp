@@ -16,4 +16,5 @@ public interface IIntegratorsRepository extends JpaRepository<Integrators, Long>
 
 	public List<Integrators> findByUserAndState(Users user, boolean states);
 	public List<Integrators> findByChatAndState(Chats chat, boolean state);
+	public boolean existsByUserAndChat(Users user, Chats chat);
 }

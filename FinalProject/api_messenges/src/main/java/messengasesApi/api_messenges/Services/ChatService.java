@@ -34,23 +34,14 @@ public class ChatService {
 	public List<Chats> getAll(){
 		return chatRepo.findAll();
 	}
-
-	public Page<Chats> getAll(int index){
-		Pageable pageable = PageRequest.of(index, 10);
-		return chatRepo.findByState(true, pageable);
-	}
 	
 	public Chats get(Long id) {
-		return chatRepo.getById(id);
-	}
-	
-	public List<Chats> getByName(String name){
-		return chatRepo.findByNameAndState(name, true);
+		return chatRepo.findByIdAndState(id,true);
 	}
 	
 	public List<Users> getAllUserByChat(Long chatId){
 		if(!chatRepo.existsByIdAndState(chatId, true)) return null;
-		Chats chat = chatRepo.getByIdAndState(chatId, true);
+		Chats chat = chatRepo.findByIdAndState(chatId, true);
 		List<Integrators> integrators = integratorsRepo.findByChatAndState(chat, true);
 		List<Users> users = new ArrayList<>();
 		for(Integrators integrator: integrators){
@@ -59,12 +50,23 @@ public class ChatService {
 		return users;
 	}
 
-	public boolean save(Chats user) {
-		if(chatRepo.existsByIdAndState(user.getId(), true)) {
+	public boolean save(Chats chat) {
+		if(chatRepo.existsByIdAndState(chat.getId(), true)) {
 			return false;
+		} else {
+			chatRepo.save(chat);
+			return true;
+		}	
+	}
+	
+	public boolean saveIntegrator(Integrators integrator) {
+		
+		if(integratorsRepo.existsByUserAndChat(integrator.getUser(),integrator.getChat())) {
+			return false;
+		} else {		
+			integratorsRepo.save(integrator);
+			return true;
 		}
-		chatRepo.save(user);
-		return true;
 	}
 	
 	
