@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import messengasesApi.api_messenges.Model.Chats;
@@ -36,13 +39,9 @@ public class ChatService {
 		return chatRepo.findByIdAndState(id,true);
 	}
 	
-	public List<Chats> getByName(String name){
-		return chatRepo.findByNameAndState(name, true);
-	}
-	
 	public List<Users> getAllUserByChat(Long chatId){
 		if(!chatRepo.existsByIdAndState(chatId, true)) return null;
-		Chats chat = chatRepo.getByIdAndState(chatId, true);
+		Chats chat = chatRepo.findByIdAndState(chatId, true);
 		List<Integrators> integrators = integratorsRepo.findByChatAndState(chat, true);
 		List<Users> users = new ArrayList<>();
 		for(Integrators integrator: integrators){
@@ -51,12 +50,23 @@ public class ChatService {
 		return users;
 	}
 
-	public boolean save(Chats user) {
-		if(chatRepo.existsByIdAndState(user.getId(), true)) {
+	public boolean save(Chats chat) {
+		if(chatRepo.existsByIdAndState(chat.getId(), true)) {
 			return false;
+		} else {
+			chatRepo.save(chat);
+			return true;
+		}	
+	}
+	
+	public boolean saveIntegrator(Integrators integrator) {
+		
+		if(integratorsRepo.existsByUserAndChat(integrator.getUser(),integrator.getChat())) {
+			return false;
+		} else {		
+			integratorsRepo.save(integrator);
+			return true;
 		}
-		chatRepo.save(user);
-		return true;
 	}
 	
 	

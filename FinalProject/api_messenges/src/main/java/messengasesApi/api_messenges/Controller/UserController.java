@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Users;
+import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.UserService;
 
 @RestController
@@ -24,6 +25,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ChatService chatService;
 	
 	@GetMapping("/{id_user}")
 	public ResponseEntity<Users> get(@PathVariable("id_user") long id){
@@ -52,13 +56,13 @@ public class UserController {
 			return ResponseEntity.badRequest().body(users);
 	}
 	
-	@GetMapping("/chatsByUser/{id_user}")
-	public ResponseEntity<List<Chats>> getAllChatsByUser(@PathVariable("id_user") long id){
-		List<Chats> chats = userService.getAllChatsByUser(id);
-		if(!chats.isEmpty())
-			return ResponseEntity.ok().body(chats);
+	@GetMapping("/usersFromChat/{id_chat}")
+	public ResponseEntity<List<Users>> getUsersFromChat(@PathVariable("id_chat") long id){
+		List<Users> users = chatService.getAllUserByChat(id);
+		if(users!=null) 
+			return ResponseEntity.ok().body(users);
 		else 
-			return ResponseEntity.badRequest().body(chats);
+			return ResponseEntity.badRequest().body(users);
 	}
 	
 	@PostMapping("/register")

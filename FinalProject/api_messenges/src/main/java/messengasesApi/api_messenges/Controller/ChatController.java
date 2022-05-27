@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.Integrators;
 import messengasesApi.api_messenges.Model.Users;
 import messengasesApi.api_messenges.Services.ChatService;
+import messengasesApi.api_messenges.Services.UserService;
 
 @RestController
 @RequestMapping("/api/chats")
@@ -24,14 +26,10 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
-	@GetMapping
-	public ResponseEntity<List<Chats>> getAll(){
-		List<Chats> chats = chatService.getAll();
-		if(chats!=null) 
-			return ResponseEntity.ok().body(chats);
-		else 
-			return ResponseEntity.badRequest().body(chats);	
-	}
+	@Autowired
+	private UserService userService;
+	
+	
 	
 	@GetMapping("/{id_chat}")
 	public ResponseEntity<?> get(@PathVariable("id_chat") long id){
@@ -42,22 +40,13 @@ public class ChatController {
 			return ResponseEntity.badRequest().body("Error");	
 	}
 	
-	@GetMapping("/byUsername")
-	public ResponseEntity<List<Chats>> getChatsByName(@RequestBody String name){
-		List<Chats> chats = chatService.getByName(name);
-		if(chats!=null) 
+	@GetMapping("/chatsByUser/{id_user}")
+	public ResponseEntity<List<Chats>> getAllChatsByUser(@PathVariable("id_user") long id){
+		List<Chats> chats = userService.getAllChatsByUser(id);
+		if(!chats.isEmpty())
 			return ResponseEntity.ok().body(chats);
 		else 
 			return ResponseEntity.badRequest().body(chats);
-	}
-	
-	@GetMapping("/usersFromChat/{id_chat}")
-	public ResponseEntity<List<Users>> getUsersFromChat(@PathVariable("id_chat") long id){
-		List<Users> users = chatService.getAllUserByChat(id);
-		if(users!=null) 
-			return ResponseEntity.ok().body(users);
-		else 
-			return ResponseEntity.badRequest().body(users);
 	}
 	
 	@PostMapping
@@ -67,6 +56,19 @@ public class ChatController {
 			return ResponseEntity.ok().body("Chat Saved");
 		else 
 			return ResponseEntity.badRequest().body("Error");
+	}
+	
+	@PostMapping("/addUserToChat/{id_user}/{id_chat}")
+	public ResponseEntity<?> save(@PathVariable("id_user") long idUser, @PathVariable("id_chat") long idChat){
+		
+		Integrators integrator = new Integrators();
+		integrator.setUser(userService.get(idUser));
+		integrator.setChat(chatService.get(idChat));
+		if(chatService.saveIntegrator(integrator)) 
+			return ResponseEntity.ok().body("Ingrator saved");
+		else 
+			return ResponseEntity.badRequest().body("Error");
+			
 	}
 	
 	@PutMapping
