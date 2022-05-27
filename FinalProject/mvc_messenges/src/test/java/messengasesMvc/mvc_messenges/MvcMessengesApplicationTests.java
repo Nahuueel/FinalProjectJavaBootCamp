@@ -14,8 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
-import messengasesMvc.mvc_messenges.services.UserService;
 
 
 @RunWith(SpringRunner.class)

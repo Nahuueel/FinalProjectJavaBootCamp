@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import messengasesApi.api_messenges.Model.Chats;
-import messengasesApi.api_messenges.Model.Users;
 
 
 @Repository

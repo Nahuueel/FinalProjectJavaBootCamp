@@ -14,15 +14,21 @@ public class UserService {
     @Autowired
     private RestTemplate fetch;
 
-    private StringBuilder url = new StringBuilder("http://localhost:8080/api/users");
+    private StringBuilder url = new StringBuilder("http://localhost:8080/api");
 
+    
+    public UserModel login(UserModel user) {
+    	ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/login" + user).toString(), UserModel.class);
+    	return response.getBody();
+    }
+    
     public UserModel getUserById(long id) {
-        ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/" + id).toString(), UserModel.class);
+        ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/users/" + id).toString(), UserModel.class);
         return response.getBody();
     }
 
     public boolean createUser(UserModel user) {
-        ResponseEntity<String> response = fetch.postForEntity(url.append("/register").toString(), user, String.class);
+        ResponseEntity<String> response = fetch.postForEntity(url.append("/users/register").toString(), user, String.class);
         return response.getBody().equals("User Saved");
     }
 

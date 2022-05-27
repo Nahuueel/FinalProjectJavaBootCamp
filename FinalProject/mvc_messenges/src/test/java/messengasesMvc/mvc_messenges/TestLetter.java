@@ -11,10 +11,10 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import messengasesMvc.mvc_messenges.Controllers.Services.LetterService;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
-import messengasesMvc.mvc_messenges.services.LetterService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
