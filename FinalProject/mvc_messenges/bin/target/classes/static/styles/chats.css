@@ -1,0 +1,151 @@
+
+
+.contacts{
+    grid-column: 1/3;
+    grid-row: 1/6;
+    background: whitesmoke;
+    border: 2px solid lightgray;
+    margin: 5px;
+    margin-right: 10%;
+    border-radius: 10px;
+    overflow-y:auto;
+}
+
+.chat{
+    background: whitesmoke;
+    grid-column: 3/6;
+    grid-row: 1/6;
+    margin: 10px;
+    border:2px solid lightgray;
+    border-radius: 10px;
+    display:grid;
+    grid-template: repeat(12, 1fr) / repeat(12, 1fr);
+}
+
+.contact{
+    padding:21px 21px;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    font-weight: bold;
+    color:darkorchid;
+    transition:all 0.2s;
+    cursor:pointer;
+}
+
+.contact:active{
+    color: white;
+    background: darkorchid;
+    cursor:pointer;
+}
+
+.messages{
+    grid-column: 1/13;
+    grid-row:1/12;
+    margin: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.messages-form{
+    grid-column: 1/13;
+    margin: 10px;
+    border: 2px solid gray;
+    border-radius:10px;
+    padding: 10px;
+}
+
+.messages-form input{
+    outline: 0;
+    width: 90%;
+    font-size: 1.5em;
+    color: darkorchid;
+    border: 0 solid transparent;
+    border-left: 7.5px solid darkorchid;
+    transition: all 0.2s;
+    background: lightgray;
+    border-radius: 5px;
+}
+
+.messages-form input:focus{
+    border: 0 solid transparent;
+    border-bottom: 7.5px solid darkorchid;
+}
+
+.send{
+    width:8%;
+    font-size: 1.25em;
+    height: 40px;
+    border: 2px solid darkorchid;
+    border-radius: 15px;
+    cursor:pointer;
+    color: darkorchid;
+}
+
+.send:active{
+    background: darkorchid;
+    color: white;
+    border: 2px solid white;
+}
+
+.message-one{
+    margin: 10px;
+    margin-right:50%;
+    border:5px solid lightgray;
+    padding: 2px;
+    border-radius: 10px;
+
+}
+
+
+.message-two{
+    margin: 10px;
+    margin-left: 50%;
+    border:5px solid lightgray;
+    padding: 2px;
+    border-radius: 10px;
+}
+
+.pagination-buttons{
+    grid-column: 1/3;
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid lightgray;
+    border-radius: 10px;
+}
+
+.previus-contact{
+    padding: 10px;
+    margin-left: 30%;
+    font-size: 1.25em;
+    border: 5px solid darkorchid;
+    border-radius: 15px;
+    cursor: pointer;
+    transition:all 0.2s;
+}
+
+.previus-contact:active{
+    border: 5px solid lightgray;
+    color: lightgray;
+    background: darkorchid;
+}
+.next-contact{
+    padding: 10px;
+    margin-left: 5px;
+    font-size: 1.25em;
+    border: 5px solid darkorchid;
+    border-radius: 15px;
+    cursor: pointer;
+    transition:all 0.2s;
+}
+
+.next-contact:active{
+    border: 5px solid lightgray;
+    color: lightgray;
+    background: darkorchid;
+}
+
+.profile{
+    text-decoration: none;
+    color: white;
+}

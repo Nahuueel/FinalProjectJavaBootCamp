@@ -17,8 +17,8 @@ public class UserService {
     private StringBuilder url = new StringBuilder("http://localhost:8080/api");
 
     
-    public UserModel login(UserModel user) {
-    	ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/login" + user).toString(), UserModel.class);
+    public String login(UserModel user) {
+    	ResponseEntity<String> response = fetch.getForEntity(url.append("/login" + user).toString(), String.class);
     	return response.getBody();
     }
     
