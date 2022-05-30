@@ -119,6 +119,7 @@
 }
 
 .previus-contact{
+    display:inline-block;
     padding: 10px;
     margin-left: 15%;
     font-size: 1.25em;
@@ -134,6 +135,7 @@
     background: darkorchid;
 }
 .next-contact{
+    display:inline-block;
     padding: 10px;
     margin-left: 5px;
     font-size: 1.25em;
@@ -169,6 +171,7 @@
         grid-row:3/11;
     }
     .contact{
+        display:block;
         height: 1.5em;
         width: 14em;
         padding: 5px;
@@ -189,6 +192,7 @@
         flex-direction: column;
     }
     .previus-contact, .next-contact{
+        display:inline-block;
         margin:0px;
     }
 

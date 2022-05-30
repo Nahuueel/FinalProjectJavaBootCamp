@@ -15,25 +15,25 @@
         </h1>
     </div>
     <div layout:fragment="BODY">
-        <form>
+        <form th:acction="/index/signin" th:object="${user}" method="POST">
             <div class="field-container">
                 <label>
                         Username
                 </label>
-                <input type="text" />
+                <input type="text" th:field="*{username}"/>
             </div>
             <div class="field-container">
                 <label>
                     Password
                 </label>
-                <input type="password" />
+                <input type="password" th:field="*{password}"/>
             </div>
-            <button class="button-up" type="button" onclick="window.location.replace(`./chats.html`)">
+            <button class="button-up" type="button" submit>
                 Sign in
             </button>
-            <button type="button" class="button-down" onclick="window.location.replace(`./sign_up.html`)">
-                Register
-            </button>
+            <a th:href="@{/index/signup}" class="button-down">
+                Sign Up
+            </a>
         </form>
     </div>
 </body>

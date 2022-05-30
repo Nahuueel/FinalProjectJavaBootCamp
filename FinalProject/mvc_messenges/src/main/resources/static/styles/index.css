@@ -60,6 +60,7 @@ form{
 }
 
 .button-down{
+    display: inline-block;
     font-size: 1.5em;
     text-align: center;
     padding: 5px;
@@ -75,6 +76,7 @@ form{
 
 
 .button-down:hover{
+    display: inline-block;
     background: darkorchid;
     border:5px solid snow;
     color: snow;
@@ -107,6 +109,7 @@ form{
         margin-left:10%;
     }
     .button-down{
+        display: inline-block;
         margin-left:10%;
     }
 }
