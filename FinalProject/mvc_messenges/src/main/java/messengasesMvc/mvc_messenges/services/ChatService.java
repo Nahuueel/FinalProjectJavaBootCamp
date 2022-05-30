@@ -1,5 +1,6 @@
 package messengasesMvc.mvc_messenges.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
 @Service
@@ -35,6 +37,10 @@ public class ChatService {
 		return response.getBody();
 	}
 	
+	public List<LetterModel> getLetterByChat(ChatModel chat) {
+		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/byChats/" + chat.getId()).toString(), Mapper.class);
+		return response.getBody().getListaMensaje();
+	}
 
 	public boolean createChat(ChatModel chatcito) {
 		ResponseEntity<ChatModel> response = fetch.postForEntity(url.append("/createChat").toString(), chatcito, ChatModel.class);
@@ -49,4 +55,6 @@ public class ChatService {
 	public void deleteChat(long id) {
 		fetch.delete(url.append("/" + id).toString());
 	}
+
+	
 }

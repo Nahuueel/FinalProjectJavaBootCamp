@@ -17,8 +17,8 @@ public class UserService {
     private StringBuilder url = new StringBuilder("http://localhost:8080/api");
 
     
-    public String login(UserModel user) {
-    	ResponseEntity<String> response = fetch.getForEntity(url.append("/login" + user).toString(), String.class);
+    public UserModel login(UserModel user) {
+    	ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/login" + user).toString(), UserModel.class);
     	return response.getBody();
     }
     
@@ -27,6 +27,11 @@ public class UserService {
         return response.getBody();
     }
 
+    public UserModel getUserByUsername(String user) {
+		ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/users/" + user).toString(), UserModel.class);
+		return response.getBody();
+	}
+    
     public boolean createUser(UserModel user) {
         ResponseEntity<String> response = fetch.postForEntity(url.append("/users/register").toString(), user, String.class);
         return response.getBody().equals("User Saved");
@@ -40,4 +45,6 @@ public class UserService {
     public void deleteUser(long id){
         fetch.delete(url.append("/" + id).toString());
     }
+
+	
 }
