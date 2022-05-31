@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,21 +19,20 @@ public class UserController {
 	@Autowired
 	private UserService userS;
 	
-	@GetMapping("/profile")
-	public String profileView(@ModelAttribute("user") UserModel userLogin, Model model) {
-		model.addAttribute("user", userLogin);
+	@GetMapping("/profile/{idUser}")
+	public String profileView(@PathVariable("idUser") long idUser, Model model) {
+		model.addAttribute("user", userS.getUserById(idUser));
 		return "profile";
 	}
 	
 	@PostMapping("/modify")
-	public String modifyUser(@ModelAttribute("user") UserModel userLogin, Model model) {
-		model.addAttribute("user", userLogin);
+	public String modifyUser(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin);
-			model.addAttribute("idChat", 1);
-			return "redirect:/chats/principal"; 
+			return "redirect:/chats/principal/"+idUser; 
 		} else 
-			return "redirect:/profile";
+			return "redirect:/profile/"+idUser;
 	}
 	
 	@PostMapping("/delete")
@@ -42,9 +42,9 @@ public class UserController {
 	}
 	
 	@PostMapping("/back")
-	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat", 1);
-		return "redirect:/chats/principal";
+	public String goBack(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		long idChat = 1;
+		return "redirect:/chats/principal/"+idUser+"/"+idChat;
 	}
 }

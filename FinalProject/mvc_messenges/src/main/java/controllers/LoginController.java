@@ -28,7 +28,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signin")
-	public String login(@ModelAttribute("user") UserModel userLogin, Model model) {
+	public String login(@ModelAttribute("user") UserModel userLogin) {
 //		try {
 //			token = userS.login(user);
 //			redAt.addFlashAttribute("token", token);
@@ -38,9 +38,12 @@ public class LoginController {
 //			return "redirect:/login";
 		
 //		}
+		
+		userS.login(userLogin);
 		UserModel user = userS.getUserByUsername(userLogin.getUsername());
-		model.addAttribute(user);
-		return "redirect:/chats/principal";	
+		long idUser = user.getId();
+		long idChat = 1;
+		return "redirect:/chats/principal/"+idUser+"/"+idChat;	
 	}
 	
 	@GetMapping("/signup")
@@ -50,10 +53,8 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(@ModelAttribute("user") UserModel userLogin, Model model) {
+	public String signUp(@ModelAttribute("user") UserModel userLogin) {
 		if(userS.createUser(userLogin)) {
-			model.addAttribute("user",userLogin);
-			model.addAttribute("idChat",1);
 			return "redirect:/login";			
 		}
 		else

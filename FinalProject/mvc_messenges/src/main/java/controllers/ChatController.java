@@ -32,10 +32,10 @@ public class ChatController {
 	private LetterService letS;
 	
 	
-	@GetMapping("/principal")
-	public String showChats(Model model, @ModelAttribute("user") UserModel userLogin, @ModelAttribute("idChat") long idChat) {
+	@GetMapping("/principal/{idUser}/{idChat}")
+	public String showChats(Model model, @PathVariable("idUser") long idUser, @PathVariable("idChat") long idChat) {
 		//UserModel user = userS.getUserById(idUser);
-		UserModel user = userS.getUserByUsername(user.getUsername());
+		UserModel user = userS.getUserById(idUser);
 		ChatModel chat = chatS.getChatById(idChat);
 		ArrayList<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
 		ArrayList<LetterModel> msgs = chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chat
@@ -44,24 +44,16 @@ public class ChatController {
 		model.addAttribute("chats", chats);
 		model.addAttribute("mesagges", msgs);
 		model.addAttribute("newMsg", new LetterModel());
+		model.addAttribute("chatSelected", chat);
 		
 		return "templates/chats";
 	}
 	
 	@PostMapping("/selectChat")
-	public String selectChat(@ModelAttribute("chats") ChatModel chat, @ModelAttribute("user") UserModel user) {
-		//no se como hacer para cuando le haces click en 
-		//el nombre del chat guarde el chat por aca y despues haga el redirect al principal
-	}
-	
-	@PostMapping("/next")
-	public String nextChats() {
-		//me faltasn los paggeable 
-	}
-	
-	@PostMapping("/prev")
-	public String prevChats() {
-		//Me faltan los paggeables
+	public String selectChat(@ModelAttribute("user") UserModel user, @ModelAttribute("chatSelected") ChatModel chat) {
+		long idUser = user.getId();
+		long idChat = chat.getId();
+		return "redirect:/principal/"+idUser+"/"+idChat;
 	}
 	
 	
@@ -78,19 +70,20 @@ public class ChatController {
 	}
 	
 	@PostMapping("/profile")
-	public String profileView(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		return "redirect:/users/profile"; 
+	public String profileView(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		return "redirect:/users/profile/"+idUser; 
 	}
 	
 	@PostMapping("/createChatView")
-	public String goCreateChat(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		return "redirect:/createChat";
+	public String goCreateChat(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		return "redirect:/createChat/"+idUser;
 	}
 	
-	@GetMapping("/createChat")
-	public String createChatView(Model model, @ModelAttribute("user") UserModel userLogin) {
+	@GetMapping("/createChat/{idUser}")
+	public String createChatView(Model model, @PathVariable("idUser") long idUser) {
+		UserModel userLogin = userS.getUserById(idUser);
 		model.addAttribute("integrator", new UserModel());
 		model.addAttribute("user", userLogin);
 		model.addAttribute("chat", new ChatModel());
@@ -98,18 +91,17 @@ public class ChatController {
 	}
 	
 	@PostMapping("/createChat")
-	public String createChat(Model model, @ModelAttribute("user") UserModel userLogin, @ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
+	public String createChat(@ModelAttribute("user") UserModel userLogin, @ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
+		long idUser = userLogin.getId();
+		long idChat = 1;
 		UserModel user2 = userS.getUserbyUsername(integrator.getUsername());
 		if(user2!=null) {
 			chatS.createChat(chat);
 			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
 			chatS.addIntegrator(chat, user2);
-			model.addAttribute("user", userLogin);
-			model.addAttribute("id_chat",chat.getId());
-			return "redirect:/principal";
+			return "redirect:/principal/"+idUser+"/"+idChat;
 		} else 
-			model.addAttribute("user", userLogin);
-			return "redirect:/createChat";	
+			return "redirect:/createChat/"+idUser;	
 	}
 	
 	@PostMapping("/delete")
@@ -119,9 +111,9 @@ public class ChatController {
 	}
 	
 	@PostMapping("/back")
-	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat", 1);
-		return "redirect:/principal";
+	public String goBack(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		long idChat = 1;
+		return "redirect:/principal/"+idUser+"/"+idChat;
 	}
 }
