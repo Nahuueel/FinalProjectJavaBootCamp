@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
 @Service
@@ -35,6 +36,16 @@ public class ChatService {
 		return response.getBody();
 	}
 	
+	public void addIntegrator(ChatModel chat, UserModel user) {
+		ResponseEntity<?> response = fetch.postForEntity(url.append("/addUserToChat/" + user.getId()
+		+ "/" + chat.getId()).toString()
+				, user, null);
+	}
+	
+	public List<LetterModel> getLetterByChat(ChatModel chat) {
+		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/byChats/" + chat.getId()).toString(), Mapper.class);
+		return response.getBody().getListaMensaje();
+	}
 
 	public boolean createChat(ChatModel chatcito) {
 		ResponseEntity<ChatModel> response = fetch.postForEntity(url.append("/createChat").toString(), chatcito, ChatModel.class);
@@ -49,4 +60,6 @@ public class ChatService {
 	public void deleteChat(long id) {
 		fetch.delete(url.append("/" + id).toString());
 	}
+
+	
 }
