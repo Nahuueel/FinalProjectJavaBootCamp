@@ -1,4 +1,4 @@
-package controllers;
+package messengasesMvc.mvc_messenges.controller;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,7 @@ public class ChatController {
 		UserModel user = userS.getUserById(idUser);
 		ChatModel chat = chatS.getChatById(idChat);
 		ArrayList<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
-		ArrayList<LetterModel> msgs = chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chat
+		ArrayList<LetterModel> msgs = (ArrayList<LetterModel>) chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chat
 		
 		model.addAttribute("user",user);
 		model.addAttribute("chats", chats);
@@ -86,7 +86,7 @@ public class ChatController {
 	public String createChat(@ModelAttribute("user") UserModel userLogin, @ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
 		long idUser = userLogin.getId();
 		long idChat = 1;
-		UserModel user2 = userS.getUserbyUsername(integrator.getUsername());
+		UserModel user2 = userS.getUserByUsername(null);
 		if(user2!=null) {
 			chatS.createChat(chat);
 			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator

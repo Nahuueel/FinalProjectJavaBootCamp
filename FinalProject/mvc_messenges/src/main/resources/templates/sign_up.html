@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-    layout:decorate="~{./skeletons/skeleton}">
+    xmlns:th="http://thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +16,7 @@
             </h1>
         </div>
        <div layout:fragment="BODY">
-            <form th:acction="@{/index/signup}" th:object="${user}" method="POST">
+            <form th:acction="@{/signup}" th:object="${user}" method="POST">
                 <div class="field-container">
                     <label>
                         Full name
@@ -52,7 +53,7 @@
                 <button class="button-up" type="submit">
                     Register
                 </button>
-                <a class="button-down" th:href="/index/login">
+                <a class="button-down" th:href="@{/login}">
                     Go to sign in
                 </a>
             </form>
