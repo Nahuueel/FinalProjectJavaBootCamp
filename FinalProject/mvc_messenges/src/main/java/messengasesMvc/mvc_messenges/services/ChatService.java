@@ -37,6 +37,12 @@ public class ChatService {
 		return response.getBody();
 	}
 	
+	public void addIntegrator(ChatModel chat, UserModel user) {
+		ResponseEntity<?> response = fetch.postForEntity(url.append("/addUserToChat/" + user.getId()
+		+ "/" + chat.getId()).toString()
+				, user, null);
+	}
+	
 	public List<LetterModel> getLetterByChat(ChatModel chat) {
 		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/byChats/" + chat.getId()).toString(), Mapper.class);
 		return response.getBody().getListaMensaje();
