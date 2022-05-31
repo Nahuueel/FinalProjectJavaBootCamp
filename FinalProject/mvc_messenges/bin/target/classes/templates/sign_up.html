@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+    layout:decorate="~{./skeletons/skeleton}">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign up</title>
+        <link rel="stylesheet" href="/styles/index.css">
+    </head>
+    <body>
+        <div layout:fragment="TITLE">
+            <h1>
+                Register 
+            </h1>
+        </div>
+       <div layout:fragment="BODY">
+            <form>
+                <div class="field-container">
+                    <label>
+                        FullName
+                    </label>
+                    <input type="text" />
+                </div>
+                <div class="field-container">
+                    <label>
+                        Username
+                    </label>
+                    <input type="username" />
+                </div>
+                <div class="field-container">
+                    <label>
+                        Password
+                    </label>
+                    <input type="password" />
+                </div>
+                <div class="field-container">
+                    <label>Language</label>
+                    <select>
+                        <option value="es">Spanish</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="en" selected>English</option>
+                        <option value="de">Germany</option>
+                        <option value="it">Italian</option>
+                        <option value="fr">French</option>
+                        <option value="ru">Rusian</option>
+                        <option value="zh">Chinese</option>
+                        <option value="tr">Turkish</option>
+                        <option value="ja">Japanese</option>
+                    </select>
+                </div>
+                <button class="button-up" type="submit">
+                    Register
+                </button>
+                <button class="button-down" type="button" onclick="window.location.replace('./index.html')">
+                    Go to sign in
+                </button>
+            </form>
+       </div>
+    </body>
+</html>

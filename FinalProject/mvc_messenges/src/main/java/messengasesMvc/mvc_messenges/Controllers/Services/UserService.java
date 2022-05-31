@@ -27,6 +27,11 @@ public class UserService {
         return response.getBody();
     }
 
+    public UserModel getUserByUsername(String user) {
+		ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/users/" + user).toString(), UserModel.class);
+		return response.getBody();
+	}
+    
     public boolean createUser(UserModel user) {
         ResponseEntity<String> response = fetch.postForEntity(url.append("/users/register").toString(), user, String.class);
         return response.getBody().equals("User Saved");
