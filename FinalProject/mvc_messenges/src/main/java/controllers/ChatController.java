@@ -49,14 +49,6 @@ public class ChatController {
 		return "templates/chats";
 	}
 	
-	@PostMapping("/selectChat")
-	public String selectChat(@ModelAttribute("user") UserModel user, @ModelAttribute("chatSelected") ChatModel chat) {
-		long idUser = user.getId();
-		long idChat = chat.getId();
-		return "redirect:/principal/"+idUser+"/"+idChat;
-	}
-	
-	
 	@PostMapping("/sendMsg")
 	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, @ModelAttribute("chats") ChatModel chat, @ModelAttribute("user") UserModel userLogin, Model model) {
 		if(msg.getContent()!=null) {
@@ -110,10 +102,4 @@ public class ChatController {
 		return "redirect:/index/login";
 	}
 	
-	@PostMapping("/back")
-	public String goBack(@ModelAttribute("user") UserModel userLogin) {
-		long idUser = userLogin.getId();
-		long idChat = 1;
-		return "redirect:/principal/"+idUser+"/"+idChat;
-	}
 }
