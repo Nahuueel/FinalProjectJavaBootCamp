@@ -118,22 +118,6 @@
     border-radius: 5px;
 }
 
-.previus-contact{
-    display:inline-block;
-    padding: 10px;
-    margin-left: 15%;
-    font-size: 1.25em;
-    border: 5px solid darkorchid;
-    border-radius: 15px;
-    cursor: pointer;
-    transition:all 0.2s;
-}
-
-.previus-contact:active{
-    border: 5px solid lightgray;
-    color: lightgray;
-    background: darkorchid;
-}
 .next-contact{
     display:inline-block;
     padding: 10px;
