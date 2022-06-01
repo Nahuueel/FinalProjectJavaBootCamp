@@ -38,7 +38,7 @@ public class ChatController {
 		//UserModel user = userS.getUserById(idUser);
 		UserModel user = userS.getUserByUsername(userLogin.getUsername());
 		ChatModel chat = chatS.getChatById(idChat);
-		List<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
+		List<ChatModel> chats = (ArrayList<ChatModel>) chatS.getUsersByChat(user);	// aca en realidad va con la paginacion para mostrar 10
 		List<LetterModel> msgs = chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chatS
 		List<LetterModel> translatedMsg = new ArrayList<>();
 		for(LetterModel msg: msgs){
@@ -52,22 +52,6 @@ public class ChatController {
 		model.addAttribute("newMsg", new LetterModel());
 		
 		return "templates/chats";
-	}
-	
-	@PostMapping("/selectChat")
-	public String selectChat(@ModelAttribute("chats") ChatModel chat, @ModelAttribute("user") UserModel user) {
-		//no se como hacer para cuando le haces click en 
-		//el nombre del chat guarde el chat por aca y despues haga el redirect al principal
-	}
-	
-	@PostMapping("/next")
-	public String nextChats() {
-		//me faltasn los paggeable 
-	}
-	
-	@PostMapping("/prev")
-	public String prevChats() {
-		//Me faltan los paggeables
 	}
 	
 	

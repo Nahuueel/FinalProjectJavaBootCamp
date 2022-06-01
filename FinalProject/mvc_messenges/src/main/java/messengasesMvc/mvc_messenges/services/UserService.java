@@ -2,6 +2,9 @@ package messengasesMvc.mvc_messenges.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +20,9 @@ public class UserService {
     @Autowired
     private CookieService cookie;
     
+    @Autowired
+    private HttpHeaders header;
+    
     private StringBuilder url = new StringBuilder("http://localhost:8080/api");
 
     
@@ -27,12 +33,18 @@ public class UserService {
     }
     
     public UserModel getUserById(long id) {
-        ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/users/" + id).toString(), UserModel.class);
+    	String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        ResponseEntity<UserModel> response = fetch.exchange(url.append("/users/" + id).toString(),HttpMethod.GET ,entity,UserModel.class);
         return response.getBody();
     }
 
     public UserModel getUserByUsername(String user) {
-		ResponseEntity<UserModel> response = fetch.getForEntity(url.append("/users/" + user).toString(), UserModel.class);
+    	String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		ResponseEntity<UserModel> response = fetch.exchange(url.append("/users/" + user).toString(),HttpMethod.GET ,entity,UserModel.class);
 		return response.getBody();
 	}
     
@@ -42,7 +54,10 @@ public class UserService {
     }
 
     public void updateUser(UserModel user) {
-        fetch.put(url.toString(), user, String.class);
+    	String token = cookie.readCookie("");
+		HttpEntity<UserModel> entity = new HttpEntity<>(user,header);
+		header.setBearerAuth(token);
+        fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
         
     }
 
