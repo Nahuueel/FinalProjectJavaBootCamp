@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+    font-family: 'Roboto';
+}
+
+.grid-container{
+    height: 100vh;
+    display:grid;
+    grid-template: repeat(12, 1fr) / repeat(12, 1fr);
+}
+
+.header{
+    align-self: start;
+    grid-column: 1/13;
+    padding: 12.5px 50px;
+    background: darkorchid;
+    color: white; 
+    border-bottom: lightgray 5px solid;
+}
+
+
+.main{
+    grid-column: 1/13;
+    grid-row: 2/13;
+    margin: 10px;
+    background: snow;
+    display: grid;
+    grid-template: repeat(5, 1fr) / repeat(5, 1fr);
+    border: lightgray 5px solid;
+    border-radius: 15px;
+    padding: 25px;
+}

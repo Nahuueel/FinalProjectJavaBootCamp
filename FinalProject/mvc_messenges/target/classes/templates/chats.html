@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chats</title>
+        <link rel="stylesheet" href="/styles/chats.css">
+    </head>
+    <body>
+        <div layout:fragment="TITLE">
+            <h1>Chats</h1>
+            <a class="profile" href="./profile.html">
+                <i>
+                    Profile
+                </i>
+            </a>
+        </div>
+        <div layout:fragment="BODY">
+            <div class="contacts">
+                <div class="contacts-dropdown">
+                    <span>Show Contacts</span>
+                    <div class="contacts-content" th:each="chat: ${chats}" th:if="${!chats.isEmpty()}">
+                        <a th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = ${chat.id})}" th:text="${chat.name}" class="contact"></a>
+                    </div>
+                    <div class="contacts-content"  th:if="${chats.isEmpty()}">
+                        <a th:text="You have no chats" class="contact"></a>
+                    </div>
+                </div>
+                <div class="pagination-buttons">
+                    <a th:href="@{/chats/createChat/{isUser} (idUser = ${user.id})}" class="next-contact">
+                        Create Chat
+                    </a>
+                </div>
+            </div>
+            <div class="chat">   
+                    <div class="messages" th:each="message: ${msg}" th:if="${!msg.isEmpty()}">
+                        <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
+                    </div>
+                    <div class="messages" th:each="message: ${msg}" th:if="${msg.isEmpty()}">
+                        <div th:class="message-one " th:text="you have no messages"></div>
+                    </div>
+                    <form class="messages-form" th:acction="@{/chats/sendMsg}" th:object="newMsg" method="post">
+                        <input type="text" th:field="*{content}" />
+                        <button class="send" type="submit">Send</button>
+                    </form>
+            </div>
+        </div>
+    </body>
+</html>
