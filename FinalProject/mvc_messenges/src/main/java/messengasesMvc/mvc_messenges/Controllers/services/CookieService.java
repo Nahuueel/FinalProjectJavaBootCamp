@@ -1,4 +1,4 @@
-package messengasesMvc.mvc_messenges.services;
+package messengasesMvc.mvc_messenges.Controllers.services;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;

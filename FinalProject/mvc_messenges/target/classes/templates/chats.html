@@ -28,11 +28,9 @@
                         <a th:text="You have no chats" class="contact"></a>
                     </div>
                 </div>
-                <div class="pagination-buttons">
-                    <a th:href="@{/chats/createChat/{isUser} (idUser = ${user.id})}" class="next-contact">
-                        Create Chat
-                    </a>
-                </div>
+                <a th:href="@{/chats/createChat/{isUser} (idUser = ${user.id})}" class="next-contact">
+                    Create Chat
+                </a>
             </div>
             <div class="chat">   
                     <div class="messages" th:each="message: ${msg}" th:if="${!msg.isEmpty()}">

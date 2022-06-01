@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import messengasesMvc.mvc_messenges.Controllers.services.ChatService;
+import messengasesMvc.mvc_messenges.Controllers.services.LetterService;
+import messengasesMvc.mvc_messenges.Controllers.services.UserService;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
-import messengasesMvc.mvc_messenges.services.ChatService;
-import messengasesMvc.mvc_messenges.services.LetterService;
-import messengasesMvc.mvc_messenges.services.UserService;
 
 @Controller
 @RequestMapping("/chats")

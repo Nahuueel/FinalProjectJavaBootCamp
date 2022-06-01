@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import messengasesMvc.mvc_messenges.Controllers.services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
-import messengasesMvc.mvc_messenges.services.UserService;
 
 @Controller
 @RequestMapping("/index")

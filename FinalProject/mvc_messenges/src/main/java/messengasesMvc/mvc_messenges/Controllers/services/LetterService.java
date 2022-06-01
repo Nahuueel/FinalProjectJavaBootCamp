@@ -1,4 +1,4 @@
-package messengasesMvc.mvc_messenges.services;
+package messengasesMvc.mvc_messenges.Controllers.services;
 
 
 import java.util.List;
