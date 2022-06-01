@@ -17,9 +17,7 @@ public class LoginController {
 
 	@Autowired 
 	private UserService userS;
-	
-	private String token;
-	
+
 	@GetMapping("/login")
 	public String loginTemplate(Model model) {
 		model.addAttribute("user", new UserModel());
