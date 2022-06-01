@@ -1,8 +1,12 @@
 package messengasesMvc.mvc_messenges.services;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,25 +18,42 @@ import messengasesMvc.mvc_messenges.Model.UserModel;
 @Service
 public class ChatService {
 
+
+	
 	@Autowired
 	private RestTemplate fetch;
 	
+	@Autowired
+	private HttpHeaders header;
+	
+	@Autowired
+    private CookieService cookie;
+	
 	private StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
 	
-	
+	//Consultar con nico el tema de enviar token a travez del header
 	public ChatModel getChatByUser(UserModel user) {
-		ResponseEntity<ChatModel> response = fetch.getForEntity(url.append("/" + user.getId()).toString(), ChatModel.class);
+		String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/chatsByUser/" + user.getId()).toString(),HttpMethod.GET ,entity ,ChatModel.class);
 		return response.getBody();
 	}
 	
-	public List<ChatModel> getChatFromUser(UserModel user){
-		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/usersFromChats/" + user.getId()).toString(), Mapper.class);
+	public List<ChatModel> getUsersByChat(UserModel user){
+		String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		ResponseEntity<Mapper> response = fetch.exchange(url.append("/usersFromChats/" + user.getId()).toString(),HttpMethod.GET ,entity,Mapper.class);
 		return response.getBody().getListaChats();
 	}
 	
 	
 	public ChatModel getChatById(long id) {
-		ResponseEntity<ChatModel> response = fetch.getForEntity(url.append("/" + id).toString(), ChatModel.class);
+		String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/" + id).toString(),HttpMethod.GET ,entity,ChatModel.class);
 		return response.getBody();
 	}
 	
@@ -43,22 +64,34 @@ public class ChatService {
 	}
 	
 	public List<LetterModel> getLetterByChat(ChatModel chat) {
-		ResponseEntity<Mapper> response = fetch.getForEntity(url.append("/byChats/" + chat.getId()).toString(), Mapper.class);
+		String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		ResponseEntity<Mapper> response = fetch.exchange(url.append("/byChats/" + chat.getId()).toString(),HttpMethod.GET,entity ,Mapper.class);
 		return response.getBody().getListaMensaje();
 	}
 
 	public boolean createChat(ChatModel chatcito) {
-		ResponseEntity<ChatModel> response = fetch.postForEntity(url.append("/createChat").toString(), chatcito, ChatModel.class);
+		String token = cookie.readCookie("");
+		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito, header);
+		header.setBearerAuth(token);
+		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/createChat").toString(), HttpMethod.POST, entity, ChatModel.class);
 		return response.getBody().equals("Chat Saved");
 	}
 	
 	
 	public void updateChat(ChatModel chatcito) {
-		fetch.put(url.toString(), chatcito, String.class);
+		String token = cookie.readCookie("");
+		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);
+		header.setBearerAuth(token);
+		fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
 	}
 	
 	public void deleteChat(long id) {
-		fetch.delete(url.append("/" + id).toString());
+		String token = cookie.readCookie("");
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+		fetch.exchange(url.append("/" + id).toString(),HttpMethod.DELETE, entity, String.class);
 	}
 
 	
