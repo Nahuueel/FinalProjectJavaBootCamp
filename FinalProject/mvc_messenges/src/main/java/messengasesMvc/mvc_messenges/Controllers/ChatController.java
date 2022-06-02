@@ -76,30 +76,24 @@ public class ChatController {
 		return "redirect:/users/profile/"+idUser; 
 	}
 	
-	/*@PostMapping("/createChatView")
-	public String goCreateChat(@ModelAttribute("user") UserModel userLogin) {
-		long idUser = userLogin.getId();
-		return "redirect:/createChat/"+idUser;
-	}*/
-	
 	@PostMapping("/createChat")
 	public String createChat( 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie,    
         @ModelAttribute("chatDTO") createChatDTO chatDto) {
 		
-		UserModel userLogin = chatDto.getUser();
+		UserModel userLogin = userS.getUserById(chatDto.getIdUserC(), TokenCookie);
 		UserModel integrator = userS.getUserByUsername(chatDto.getIntegratorUsername(), TokenCookie);
-		ChatModel chat = chatS.createChat(chatDto.getChatName(), TokenCookie);
+		ChatModel chat = new ChatModel();
+		chat.setName(chatDto.getChatName()); 
+		chat = chatS.createChat(chat, TokenCookie);
 
-		long idUser = userLogin.getId();
-		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),TokenCookie);
-		if(user2!=null) {
-			chatS.addIntegrator(chat, userLogin); 
-			chatS.addIntegrator(chat, user2);
-			return "redirect:/principal/"+idUser;
+		if(integrator!=null) {
+			chatS.addIntegrator(chat.getId(), userLogin.getId(), TokenCookie); 
+			chatS.addIntegrator(chat.getId(), integrator.getId(), TokenCookie);
+			return "redirect:/chats/principal/"+userLogin.getId();
 		} else 
-			return "redirect:/createChat/"+idUser;	
-	}
+			return "redirect:/chats/createChat/"+userLogin.getId();	
+		}
 
 
 	@GetMapping("/createChat/{idUser}")
@@ -109,8 +103,7 @@ public class ChatController {
 		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		
 		createChatDTO newChat = new createChatDTO();
-		newChat.setUser(userLogin);
-		
+		newChat.setIdUserC(idUser);		
 
 		model.addAttribute("chatDTO", newChat);
 		model.addAttribute("User", userLogin);

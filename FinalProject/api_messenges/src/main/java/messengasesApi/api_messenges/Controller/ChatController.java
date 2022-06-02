@@ -64,7 +64,7 @@ public class ChatController {
 		integrator.setUser(userService.get(idUser));
 		integrator.setChat(chatService.get(idChat));
 		if(chatService.saveIntegrator(integrator)) 
-			return ResponseEntity.ok().body("Ingrator saved");
+			return ResponseEntity.ok().body("Intgrator saved");
 		else 
 			return ResponseEntity.badRequest().body("Error");
 			

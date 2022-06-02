@@ -42,14 +42,14 @@ public class UserService {
     }
 
     public UserModel getUserByUsername(String username, String token) {
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/users/byUsername");
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/users/byUsername/").append(username);
 
         HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(token);
 		
-        HttpEntity<String> entity = new HttpEntity<>(username,header);
+        HttpEntity<String> entity = new HttpEntity<>(header);
 
-		ResponseEntity<UserModel> response = new RestTemplate().exchange(url.toString(),HttpMethod.POST, entity, UserModel.class);
+		ResponseEntity<UserModel> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET, entity, UserModel.class);
 		return response.getBody();
 	} 
     

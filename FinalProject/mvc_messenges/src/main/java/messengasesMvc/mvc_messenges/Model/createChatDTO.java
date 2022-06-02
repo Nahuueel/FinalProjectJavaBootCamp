@@ -11,6 +11,6 @@ public class createChatDTO {
 	
 	private String chatName;
 	private String integratorUsername;
-	private UserModel user;
+	private long idUserC;
 }
 	

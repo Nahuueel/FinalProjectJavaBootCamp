@@ -67,9 +67,15 @@ public class ChatService {
 		return response.getBody();
 	}
 	
-	public void addIntegrator(ChatModel chat, UserModel user) {
-		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/addUserToChat/").append(user.getId() + "/" + chat.getId());
-		ResponseEntity<?> response = fetch.postForEntity(url.toString(), user, null);
+	public void addIntegrator(long chat, long user, String token) {
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/addUserToChat/").append(user + "/" + chat);
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
+		HttpEntity<String> entity = new HttpEntity<>(header);
+
+		ResponseEntity<String> response = fetch.exchange(url.toString(),HttpMethod.POST, entity, String.class);
 	}
 	
 	public List<LetterModel> getLetterByChat(ChatModel chat, String token) {
@@ -83,13 +89,13 @@ public class ChatService {
 		return response.getBody().getListaMensaje();
 	}
 
-	public ChatModel createChat(String chatcito, String token) {
+	public ChatModel createChat(ChatModel chatcito, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
 
 		HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(token);
 
-		HttpEntity<String> entity = new HttpEntity<>(chatcito,header);  
+		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);  
 
 		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(), HttpMethod.POST, entity, ChatModel.class);
 		return response.getBody(); 

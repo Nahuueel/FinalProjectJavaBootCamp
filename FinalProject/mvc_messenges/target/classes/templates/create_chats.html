@@ -25,8 +25,8 @@
             </a>
         </div>
         <div layout:fragment="BODY">
-            <form th:acction="@{/createChat}" th:object="${chatDTO}" method="POST">
-                <input type="hidden" th:field="*{user}" th:value="${User}">
+            <form th:action="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
+                <input type="hidden" th:field="*{IdUserC}" th:value="${chatDTO.IdUserC}">
                 <div class="field-container">
                     <label> 
                         Name Chat
