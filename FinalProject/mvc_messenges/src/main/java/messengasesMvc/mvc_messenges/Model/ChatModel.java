@@ -13,4 +13,6 @@ public class ChatModel {
     private long id;
     private String name;
     private Date creationDate;
+    private Date updatedDate;
+    private boolean state;
 }

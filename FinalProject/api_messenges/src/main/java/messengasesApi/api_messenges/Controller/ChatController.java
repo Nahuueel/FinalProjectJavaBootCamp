@@ -52,7 +52,7 @@ public class ChatController {
 	public ResponseEntity<?> save(@RequestBody Chats chat){
 		
 		if(chatService.save(chat))
-			return ResponseEntity.ok().body("Chat Saved");
+			return ResponseEntity.ok().body(chat);
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
@@ -64,7 +64,7 @@ public class ChatController {
 		integrator.setUser(userService.get(idUser));
 		integrator.setChat(chatService.get(idChat));
 		if(chatService.saveIntegrator(integrator)) 
-			return ResponseEntity.ok().body("Ingrator saved");
+			return ResponseEntity.ok().body("Intgrator saved");
 		else 
 			return ResponseEntity.badRequest().body("Error");
 			

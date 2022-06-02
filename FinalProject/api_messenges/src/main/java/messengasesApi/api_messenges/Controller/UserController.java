@@ -39,8 +39,8 @@ public class UserController {
 			return ResponseEntity.badRequest().body(user);
 	}
 	
-	@PostMapping("/byUsername")
-	public ResponseEntity<Users> getByUsername(@RequestBody String username){ 
+	@GetMapping("/byUsername/{user_name}")
+	public ResponseEntity<Users> getByUsername(@PathVariable("user_name") String username){ 
 		Users user = userService.getByUsername(username); 
 		if(user!= null) 
 			return ResponseEntity.ok().body(user);
