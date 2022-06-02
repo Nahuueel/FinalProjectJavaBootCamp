@@ -25,7 +25,7 @@
             </a>
         </div>
         <div layout:fragment="BODY">
-            <form th:acction="@{/createChat}" th:object="${chatDTO}" method="post">
+            <form th:acction="@{/createChat}" th:object="${chatDTO}" method="POST">
                 <input type="hidden" th:field="*{user}" th:value="${User}">
                 <div class="field-container">
                     <label> 
@@ -37,7 +37,7 @@
                     <label>
                         Username
                     </label>
-                    <input type="text" th:value="*{integratorUsername}"/>
+                    <input type="text" th:field="*{integratorUsername}"/>
                 </div>
                 <button class="button-up" type="submit">
                     Create Chat
