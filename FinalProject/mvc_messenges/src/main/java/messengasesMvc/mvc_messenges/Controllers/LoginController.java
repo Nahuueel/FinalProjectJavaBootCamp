@@ -45,8 +45,7 @@ public class LoginController {
 		
 		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
 		long idUser = user.getId();
-		long idChat = 1;
-		return "redirect:/chats/principal/"+idUser+"/"+idChat;	
+		return "redirect:/chats/principal/"+idUser;	
 	}
 	
 	@GetMapping("/signup")
@@ -56,14 +55,12 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(@ModelAttribute("user") UserModel userLogin, 
-		@CookieValue(name = "TokenCookie") String userToken,
+	public String signUp(@ModelAttribute("user") UserModel userLogin,
 		Model model) {
-		if(userS.createUser(userLogin,userToken)) {
+		if(userS.createUser(userLogin)) {
 			return "redirect:/login";			
 		}
 		else
-			return "redirect:/signup";	//En el html hacer el href en vez del onclick para poder cargar el model
-										//aca tambien puede tirar un error con una ventanita o toast o algo
+			return "redirect:/signup";
 	}
 }

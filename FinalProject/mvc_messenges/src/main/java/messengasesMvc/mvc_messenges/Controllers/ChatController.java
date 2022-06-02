@@ -17,6 +17,7 @@ import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
+import messengasesMvc.mvc_messenges.Model.createChatDTO;
 
 @Controller
 @RequestMapping("/chats")
@@ -35,16 +36,10 @@ public class ChatController {
 	@GetMapping("/principal/{idUser}")
 	public String showChats(Model model, 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie, 
-        @PathVariable("idUser") long idUser 
-/*        @PathVariable("idChat") long idChat*/) {
-		
+        @PathVariable("idUser") long idUser) {
 		
 		UserModel user = userS.getUserById(idUser,TokenCookie); 
 		ArrayList<ChatModel> chats = new ArrayList<>();
-//		ChatModel chat = chatS.getChatById(idChat,TokenCookie); 
-		  // aca en realidad va con la paginacion para mostrar 10
-//		ArrayList<LetterModel> msgs = (ArrayList<LetterModel>) chatS.getLetterByChat(chat,TokenCookie);  // aca tengo que traer La lista de mensajes de un chat
-
 		try{
 			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
 		}catch(Exception e){
@@ -53,9 +48,7 @@ public class ChatController {
 				return"chats.html";
 			}
 		}
-//		model.addAttribute("mesagges", msgs);
-//		model.addAttribute("newMsg", new LetterModel());
-//		model.addAttribute("chatSelected", chat);
+		
 		model.addAttribute("user", user);
 		model.addAttribute("chats", chats);
 		return "chats.html";
@@ -93,27 +86,27 @@ public class ChatController {
 	public String createChatView(Model model, 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
         @PathVariable("idUser") long idUser) {
-			
 		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		model.addAttribute("integrator", new UserModel());
 		model.addAttribute("user", userLogin);
-//		model.addAttribute("chat", new ChatModel());
 		return "create_chats";
 	}
 	
 	@PostMapping("/createChat")
-	public String createChat(@ModelAttribute("user") UserModel userLogin, 
+	public String createChat( 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie,    
-        @ModelAttribute("integrator") UserModel integrator, 
-        @ModelAttribute("chat") ChatModel chat) {
+        @ModelAttribute("chatDTO") createChatDTO chatDto) {
+		
+		UserModel userLogin = chatDto.getUser();
+		UserModel integrator = userS.getUserByUsername(chatDto.getIntegratorUsername(), TokenCookie);
+
 		long idUser = userLogin.getId();
-		long idChat = 1;		
 		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),TokenCookie);
 		if(user2!=null) {
 			chatS.createChat(chat,TokenCookie);
 			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
 			chatS.addIntegrator(chat, user2);
-			return "redirect:/principal/"+idUser+"/"+idChat;
+			return "redirect:/principal/"+idUser;
 		} else 
 			return "redirect:/createChat/"+idUser;	
 	}

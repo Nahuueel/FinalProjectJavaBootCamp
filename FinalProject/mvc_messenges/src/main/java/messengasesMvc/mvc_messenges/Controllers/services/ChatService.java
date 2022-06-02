@@ -83,16 +83,16 @@ public class ChatService {
 		return response.getBody().getListaMensaje();
 	}
 
-	public boolean createChat(ChatModel chatcito, String token) {
-		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/createChat");
+	public ChatModel createChat(String chatcito, String token) {
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
 
 		HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(token);
 
-		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);  
+		HttpEntity<String> entity = new HttpEntity<>(chatcito,header);  
 
 		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(), HttpMethod.POST, entity, ChatModel.class);
-		return response.getBody().equals("Chat Saved");
+		return response.getBody(); 
 	}
 	
 	
