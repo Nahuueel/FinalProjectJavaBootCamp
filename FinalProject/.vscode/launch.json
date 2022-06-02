@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ApiMessengasesApplication<api_messenges>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "messengasesApi.api_messenges.ApiMessengasesApplication",
+            "projectName": "api_messenges",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MvcMessengesApplication<mvc_messenges>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "messengasesMvc.mvc_messenges.MvcMessengesApplication",
+            "projectName": "mvc_messenges",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

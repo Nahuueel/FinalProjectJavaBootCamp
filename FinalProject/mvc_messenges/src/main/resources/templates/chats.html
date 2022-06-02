@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html layout:decorate="~{./skeletons/skeleton}">
+<html xmlns:th="http://thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,77 +19,29 @@
         </div>
         <div layout:fragment="BODY">
             <div class="contacts">
-                <div class="contact">contact1</div>
-                <div class="contact">contact2</div>
-                <div class="contact">contact3</div>
-                <div class="contact">contact4</div>
-                <div class="contact">contact5</div>
-                <div class="contact">contact6</div>
-                <div class="contact">contact7</div>
-                <div class="contact">contact8</div>
-                <div class="contact">contact9</div>
-                <div class="contact">contact10</div>
-            </div>
-            <div class="pagination-buttons">
-                <button class="previus-contact">
-                    Previous
-                </button>
-                <button class="next-contact">
-                    Next
-                </button>
-                <button class="next-contact" onclick="window.location.href='./create_chats.html'" type="button">
-                    Create chat
-                </button>
+                <div class="contacts-dropdown">
+                    <span>Show Contacts</span>
+                    <div class="contacts-content" th:each="chat: ${chats}" th:if="${!chats.isEmpty()}">
+                        <a th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = ${chat.id})}" th:text="${chat.name}" class="contact"></a>
+                    </div>
+                    <div class="contacts-content"  th:if="${chats.isEmpty()}">
+                        <a th:text="You have no chats" class="contact"></a>
+                    </div>
+                </div>
+                <a th:href="@{/chats/createChat/{isUser} (idUser = ${user.id})}" class="next-contact">
+                    Create Chat
+                </a>
             </div>
             <div class="chat">   
-                    <div class="messages">
-                        <div class="message-one">
-                             Message One
-                        </div>
-                        <div class="message-one">
-                            Message Two
-                        </div>
-                        <div class="message-one">
-                             Message One
-                        </div>
-                        <div class="message-two">
-                            Message Two
-                        </div>
-                        <div class="message-two">
-                             Message One
-                        </div>
-                        <div class="message-two">
-                            Message Two
-                        </div>
-                        <div class="message-two">
-                             Message One
-                        </div>
-                        <div class="message-one">
-                            Message Two
-                        </div>
-                        <div class="message-one">
-                             Message One
-                        </div>
-                        <div class="message-two">
-                            Message Two
-                        </div>
-                        <div class="message-one">
-                             Message One
-                        </div>
-                        <div class="message-two">
-                            Message Two
-                        </div>
-                        <div class="message-one">
-                             Message One
-                        </div>
-                        <div class="message-two">
-                            Message Two
-                        </div>
+                    <div class="messages" th:each="message: ${msg}" th:if="${!msg.isEmpty()}">
+                        <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
                     </div>
-                    
-                    <form class="messages-form">
-                        <input type="text" />
-                        <button class="send">Send</button>
+                    <div class="messages" th:each="message: ${msg}" th:if="${msg.isEmpty()}">
+                        <div th:class="message-one " th:text="you have no messages"></div>
+                    </div>
+                    <form class="messages-form" th:acction="@{/chats/sendMsg}" th:object="newMsg" method="post">
+                        <input type="text" th:field="*{content}" />
+                        <button class="send" type="submit">Send</button>
                     </form>
             </div>
         </div>

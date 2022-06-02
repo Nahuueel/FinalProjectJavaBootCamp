@@ -18,14 +18,14 @@
             <h1>
                 Create Chat
             </h1>
-            <a class="profile" href="./chats.html">
+            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 1)}">
                 <i>
                     Go back
                 </i>
             </a>
         </div>
         <div layout:fragment="BODY">
-            <form>
+            <form th:acction="@{/createChat}" th:object="${}" method="POST">
                 <div class="field-container">
                     <label>
                         Name Chat

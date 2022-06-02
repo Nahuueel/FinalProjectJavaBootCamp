@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,21 +32,43 @@ public class ChatController {
 	@Autowired
 	private LetterService letS;
 	
-	
-	@GetMapping("/principal")
-	public String showChats(Model model, @ModelAttribute("user") UserModel userLogin, @ModelAttribute("idChat") long idChat) {
+	@GetMapping("/principal/{idUser}/{idChat}")
+	public String showChats(Model model, @PathVariable("idUser") long idUser, @PathVariable("idChat") long idChat) {
 		//UserModel user = userS.getUserById(idUser);
-		UserModel user = userS.getUserByUsername(userLogin.getUsername());
+		UserModel user = userS.getUserById(idUser);
 		ChatModel chat = chatS.getChatById(idChat);
-		List<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
-		List<LetterModel> msgs = chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chatS
+		ArrayList<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
+		ArrayList<LetterModel> msgs = (ArrayList<LetterModel>) chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chat
+		
+		model.addAttribute("user",user);
+		model.addAttribute("chats", chats);
+		model.addAttribute("mesagges", msgs);
+		model.addAttribute("newMsg", new LetterModel());
+		model.addAttribute("chatSelected", chat);
+		
+		return "templates/chats";
+	}
+
+	@GetMapping("/principal")
+	public String showChats(Model model, @ModelAttribute("user") UserModel userLogin, 
+		@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+		@ModelAttribute("idChat") long idChat) 
+		{
+
+		UserModel user = userS.getUserById(userLogin.getId(),TokenCookie);
+		//UserModel user = userS.getUserByUsername(userLogin.getUsername(),userToken);
+		ChatModel chat = chatS.getChatById(idChat, TokenCookie);
+
+		List<ChatModel> chats = (ArrayList<ChatModel>) chatS.getUsersByChat(user, TokenCookie);	// aca en realidad va con la paginacion para mostrar 10
+		List<LetterModel> msgs = chatS.getLetterByChat(chat, TokenCookie);	// aca tengo que traer La lista de mensajes de un chatS
 		List<LetterModel> translatedMsg = new ArrayList<>();
+
 		for(LetterModel msg: msgs){
 			msg.translate();
 			translatedMsg.add(msg);
 		}
 		
-		model.addAttribute("user",user);
+		model.addAttribute("user", user);
 		model.addAttribute("chats", chats);
 		model.addAttribute("mesagges", translatedMsg);
 		model.addAttribute("newMsg", new LetterModel());
@@ -53,29 +76,17 @@ public class ChatController {
 		return "templates/chats";
 	}
 	
-	@PostMapping("/selectChat")
-	public String selectChat(@ModelAttribute("chats") ChatModel chat, @ModelAttribute("user") UserModel user) {
-		//no se como hacer para cuando le haces click en  
-		//el nombre del chat guarde el chat por aca y despues haga el redirect al principal
-	}
-	
-	@PostMapping("/next")
-	public String nextChats() {
-		//me faltasn los paggeable 
-	}
-	
-	@PostMapping("/prev")
-	public String prevChats() {
-		//Me faltan los paggeables
-	}
-	
 	
 	@PostMapping("/sendMsg")
-	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, @ModelAttribute("chats") ChatModel chat, @ModelAttribute("user") UserModel userLogin, Model model) {
+	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, 
+		@ModelAttribute("chats") ChatModel chat, 
+		@ModelAttribute("user") UserModel userLogin,
+		@CookieValue(name = "TokenCookie") String userToken,
+		Model model) {
 		if(msg.getContent()!=null) {
 			msg.setChat(chat);
 			msg.setUser(userLogin);
-			letS.createLetter(msg);
+			letS.createLetter(msg,userToken);
 		}
 		model.addAttribute("user", userLogin);
 		model.addAttribute("idChat",chat.getId());
@@ -103,10 +114,12 @@ public class ChatController {
 	}
 	
 	@PostMapping("/createChat")
-	public String createChat(Model model, @ModelAttribute("user") UserModel userLogin, @ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
-		UserModel user2 = userS.getUserByUsername(integrator.getUsername());
+	public String createChat(Model model, @ModelAttribute("user") UserModel userLogin, 
+		@CookieValue(name = "TokenCookie") String userToken,
+		@ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
+		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),userToken);
 		if(user2!=null) {
-			chatS.createChat(chat);
+			chatS.createChat(chat,userToken);
 			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
 			chatS.addIntegrator(chat, user2);
 			model.addAttribute("user", userLogin);
@@ -118,8 +131,9 @@ public class ChatController {
 	}
 	
 	@PostMapping("/delete")
-	public String deleteUser(@ModelAttribute("user") UserModel userLogin) {
-		userS.deleteUser(userLogin.getId());
+	public String deleteUser(@ModelAttribute("user") UserModel userLogin,
+		 @CookieValue(name = "TokenCookie") String userToken) {
+		userS.deleteUser(userLogin.getId(),userToken);
 		return "redirect:/index/login";
 	}
 	
