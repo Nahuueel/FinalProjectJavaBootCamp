@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
 @Service
 public class CookieService {
 
@@ -35,9 +36,9 @@ public class CookieService {
             System.out.println(uiTokenCookie);
     }
 
-    /*public String readCookie(@CookieValue(name = "TokenCookie") String userToken){      //To be use in a try catch for java.lang.IllegalStateException
+    public String readCookie(@CookieValue(name = "TokenCookie") String userToken){      //To be use in a try catch for java.lang.IllegalStateException
         return userToken;
-    }*/
+    }
 
     public void deleteCookie(){
         ResponseCookie uiTokenCookie = ResponseCookie

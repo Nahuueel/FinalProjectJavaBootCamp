@@ -48,7 +48,6 @@ public class LoginController {
 		} catch (Exception e) {
 			return "redirect:/index/login";
 		}
-		
 
 	}
 	
