@@ -52,7 +52,7 @@ public class ChatController {
 	public ResponseEntity<?> save(@RequestBody Chats chat){
 		
 		if(chatService.save(chat))
-			return ResponseEntity.ok().body("Chat Saved");
+			return ResponseEntity.ok().body(chat);
 		else 
 			return ResponseEntity.badRequest().body("Error");
 	}
