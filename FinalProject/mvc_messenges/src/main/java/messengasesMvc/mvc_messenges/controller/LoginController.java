@@ -22,20 +22,11 @@ public class LoginController {
 	@GetMapping("/login")
 	public String loginTemplate(Model model) {
 		model.addAttribute("user", new UserModel());
-		return "/index";
+		return "index";
 	}
 	
 	@PostMapping("/signin")
 	public String login(@ModelAttribute("user") UserModel userLogin) {
-//		try {
-//			token = userS.login(user);
-//			redAt.addFlashAttribute("token", token);
-//			
-//			return "redirect:/chats/principal/1/"+user.getUsername();
-//		} catch(Exception e) {
-//			return "redirect:/login";
-		
-//		}
 		
 		userS.login(userLogin);
 		UserModel user = userS.getUserByUsername(userLogin.getUsername());

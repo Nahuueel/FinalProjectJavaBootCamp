@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
+import messengasesMvc.mvc_messenges.Model.createChatDTO;
 import messengasesMvc.mvc_messenges.services.ChatService;
 import messengasesMvc.mvc_messenges.services.LetterService;
 import messengasesMvc.mvc_messenges.services.UserService;
@@ -34,7 +35,6 @@ public class ChatController {
 	
 	@GetMapping("/principal/{idUser}/{idChat}")
 	public String showChats(Model model, @PathVariable("idUser") long idUser, @PathVariable("idChat") long idChat) {
-		//UserModel user = userS.getUserById(idUser);
 		UserModel user = userS.getUserById(idUser);
 		ChatModel chat = chatS.getChatById(idChat);
 		ArrayList<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
@@ -46,7 +46,7 @@ public class ChatController {
 		model.addAttribute("newMsg", new LetterModel());
 		model.addAttribute("chatSelected", chat);
 		
-		return "templates/chats";
+		return "chats";
 	}
 	
 	@PostMapping("/sendMsg")
@@ -76,20 +76,23 @@ public class ChatController {
 	@GetMapping("/createChat/{idUser}")
 	public String createChatView(Model model, @PathVariable("idUser") long idUser) {
 		UserModel userLogin = userS.getUserById(idUser);
-		model.addAttribute("integrator", new UserModel());
-		model.addAttribute("user", userLogin);
-		model.addAttribute("chat", new ChatModel());
+		createChatDTO chatDto= new createChatDTO();
+		chatDto.setUser(userLogin);
+		
+		model.addAttribute("chatDto", chatDto);
 		return "create_chats";
 	}
 	
 	@PostMapping("/createChat")
-	public String createChat(@ModelAttribute("user") UserModel userLogin, @ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
-		long idUser = userLogin.getId();
+	public String createChat(@ModelAttribute("chatDto") createChatDTO chatDto) {
+		long idUser = chatDto.getUser().getId();
 		long idChat = 1;
-		UserModel user2 = userS.getUserByUsername(null);
+		UserModel user2 = userS.getUserByUsername(chatDto.getIntegratorUsername()));
 		if(user2!=null) {
+			ChatModel chat = new ChatModel();
+			chat.setName(chatDto.getChatName());
 			chatS.createChat(chat);
-			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
+			chatS.addIntegrator(chat, chatDto.getUser()); //falta el service addIntegrator
 			chatS.addIntegrator(chat, user2);
 			return "redirect:/principal/"+idUser+"/"+idChat;
 		} else 
@@ -99,7 +102,7 @@ public class ChatController {
 	@PostMapping("/delete")
 	public String deleteUser(@ModelAttribute("user") UserModel userLogin) {
 		userS.deleteUser(userLogin.getId());
-		return "redirect:/index/login";
+		return "redirect:/login";
 	}
 	
 }
