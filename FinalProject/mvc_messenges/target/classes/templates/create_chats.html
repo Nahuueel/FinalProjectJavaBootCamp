@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{./skeletons/skeleton}">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Create Chat</title>
+        <link rel="stylesheet" href="/styles/index.css">
+        <style>
+            .profile{
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div layout:fragment="TITLE">
+            <h1>
+                Create Chat
+            </h1>
+            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 1)}">
+                <i>
+                    Go back
+                </i>
+            </a>
+        </div>
+        <div layout:fragment="BODY">
+            <form th:acction="@{/createChat}" th:object="${chatDto}" method="POST">
+                <div class="field-container">
+                    <label>
+                        Name Chat
+                    </label>
+                    <input type="text" th:field="*{chatName}"/>
+                </div>
+                <div class="field-container">
+                    <label>
+                        Username
+                    </label>
+                    <input type="text" th:field="*{integratorUsername}"/>
+                </div>
+                <button class="button-up" type="submit">
+                    Create Chat
+                </button>
+            </form>
+        </div>
+    </body>
+</html>
