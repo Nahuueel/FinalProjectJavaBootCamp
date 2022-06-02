@@ -42,12 +42,13 @@ public class UserService {
 	public boolean save(Users user) {
 		if(userRepo.existsByUsernameAndState(user.getUsername(), true)) {
 			return false;
+		} else {			
+			String passwordHashed = encoder.encode(user.getPassword());
+			user.setPassword(passwordHashed);
+			userRepo.save(user);
+			
+			return true;
 		}
-		String passwordHashed = encoder.encode(user.getPassword());
-		user.setPassword(passwordHashed);
-		userRepo.save(user);
-		
-		return true;
 	}	
 	
 	public boolean update(Users user) {

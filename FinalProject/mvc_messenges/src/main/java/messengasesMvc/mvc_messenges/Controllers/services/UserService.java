@@ -23,10 +23,14 @@ public class UserService {
 //    private StringBuilder url = new StringBuilder("http://localhost:8080/api");
 
     
-    public String login(UserModel user) {
+    public String login(UserModel user) throws Exception {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/login");
-    	ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
-        return (response.getBody()).toString(); 
+    	try {
+	        ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
+	        return (response.getBody()).toString();
+    	} catch(Exception e) {
+    		throw new Exception("BAD_CREDENTIALS_EXCEPTION", e);
+    	}
  
     }
     
@@ -54,9 +58,13 @@ public class UserService {
 	} 
     
     public boolean createUser(UserModel user) {
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/register"); 
-        ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
-        return response.getBody().equals("User Saved");
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/users/register"); 
+        try {
+        	ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);        	
+        	return response.getBody().equals("User Saved");
+        } catch(Exception e) {
+        	return false;
+        }
     }
 
     public void updateUser(UserModel user, String token) {

@@ -97,15 +97,16 @@ public class ChatController {
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie,    
         @ModelAttribute("chatDTO") createChatDTO chatDto) {
 		
+	//	ChatModel chat = chatS.getChatByChatName(chatDto.getChatName());
 		UserModel userLogin = chatDto.getUser();
 		UserModel integrator = userS.getUserByUsername(chatDto.getIntegratorUsername(), TokenCookie);
 
 		long idUser = userLogin.getId();
 		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),TokenCookie);
 		if(user2!=null) {
-			chatS.createChat(chat,TokenCookie);
-			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
-			chatS.addIntegrator(chat, user2);
+	//		chatS.createChat(chat,TokenCookie);
+	//		chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
+	//		chatS.addIntegrator(chat, user2);
 			return "redirect:/principal/"+idUser;
 		} else 
 			return "redirect:/createChat/"+idUser;	

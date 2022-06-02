@@ -30,22 +30,26 @@ public class LoginController {
 	
 	@PostMapping("/signin")
 	public String login(@ModelAttribute("user") UserModel userLogin, HttpServletResponse response, Model model) {
-
-		String token = userS.login(userLogin);
-
-		Cookie uiTokenCookie = new Cookie("TokenCookie", token);
-            uiTokenCookie.setMaxAge(60 * 60);
-            uiTokenCookie.setSecure(true);
-            uiTokenCookie.setHttpOnly(true);
-            uiTokenCookie.setPath("/");
-
-		response.addCookie(uiTokenCookie);
-
-		System.out.println(token);
+		try {
+			String token = userS.login(userLogin);			
+			Cookie uiTokenCookie = new Cookie("TokenCookie", token);
+			uiTokenCookie.setMaxAge(60 * 60);
+			uiTokenCookie.setSecure(true);
+			uiTokenCookie.setHttpOnly(true);
+			uiTokenCookie.setPath("/");
+			
+			response.addCookie(uiTokenCookie);
+			
+			System.out.println(token);
+			
+			UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
+			long idUser = user.getId();
+			return "redirect:/chats/principal/"+idUser;	
+		} catch (Exception e) {
+			return "redirect:/index/login";
+		}
 		
-		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
-		long idUser = user.getId();
-		return "redirect:/chats/principal/"+idUser;	
+
 	}
 	
 	@GetMapping("/signup")
@@ -55,12 +59,11 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(@ModelAttribute("user") UserModel userLogin,
-		Model model) {
+	public String signUp(@ModelAttribute("user") UserModel userLogin) {
 		if(userS.createUser(userLogin)) {
-			return "redirect:/login";			
+			return "redirect:/index/login";			
 		}
 		else
-			return "redirect:/signup";
+			return "redirect:/index/signup";
 	}
 }
