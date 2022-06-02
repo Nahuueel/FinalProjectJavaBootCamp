@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Integrators;
-import messengasesApi.api_messenges.Model.Users;
 import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.UserService;
 

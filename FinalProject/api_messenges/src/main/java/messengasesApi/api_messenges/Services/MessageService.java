@@ -54,5 +54,4 @@ public class MessageService {
 		}
 		return false;
 	}
-
 }
