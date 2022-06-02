@@ -1,7 +1,5 @@
 package messengasesMvc.mvc_messenges.Controllers;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,61 +31,46 @@ public class ChatController {
 	@Autowired
 	private LetterService letS;
 	
-	@GetMapping("/principal/{idUser}/{idChat}")
-	public String showChats(Model model, @PathVariable("idUser") long idUser, @PathVariable("idChat") long idChat) {
-		//UserModel user = userS.getUserById(idUser);
-		UserModel user = userS.getUserById(idUser);
-		ChatModel chat = chatS.getChatById(idChat);
-		ArrayList<ChatModel> chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user);	// aca en realidad va con la paginacion para mostrar 10
-		ArrayList<LetterModel> msgs = (ArrayList<LetterModel>) chatS.getLetterByChat(chat);	// aca tengo que traer La lista de mensajes de un chat
+	
+	@GetMapping("/principal/{idUser}")
+	public String showChats(Model model, 
+        @CookieValue(name = "TokenCookie",required=true) String TokenCookie, 
+        @PathVariable("idUser") long idUser 
+/*        @PathVariable("idChat") long idChat*/) {
 		
-		model.addAttribute("user",user);
-		model.addAttribute("chats", chats);
-		model.addAttribute("mesagges", msgs);
-		model.addAttribute("newMsg", new LetterModel());
-		model.addAttribute("chatSelected", chat);
 		
-		return "templates/chats";
-	}
+		UserModel user = userS.getUserById(idUser,TokenCookie); 
+		ArrayList<ChatModel> chats = new ArrayList<>();
+//		ChatModel chat = chatS.getChatById(idChat,TokenCookie); 
+		  // aca en realidad va con la paginacion para mostrar 10
+//		ArrayList<LetterModel> msgs = (ArrayList<LetterModel>) chatS.getLetterByChat(chat,TokenCookie);  // aca tengo que traer La lista de mensajes de un chat
 
-	@GetMapping("/principal")
-	public String showChats(Model model, @ModelAttribute("user") UserModel userLogin, 
-		@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
-		@ModelAttribute("idChat") long idChat) 
-		{
-
-		UserModel user = userS.getUserById(userLogin.getId(),TokenCookie);
-		//UserModel user = userS.getUserByUsername(userLogin.getUsername(),userToken);
-		ChatModel chat = chatS.getChatById(idChat, TokenCookie);
-
-		List<ChatModel> chats = (ArrayList<ChatModel>) chatS.getUsersByChat(user, TokenCookie);	// aca en realidad va con la paginacion para mostrar 10
-		List<LetterModel> msgs = chatS.getLetterByChat(chat, TokenCookie);	// aca tengo que traer La lista de mensajes de un chatS
-		List<LetterModel> translatedMsg = new ArrayList<>();
-
-		for(LetterModel msg: msgs){
-			msg.translate();
-			translatedMsg.add(msg);
+		try{
+			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
+		}catch(Exception e){
+			if(e!=null){
+				model.addAttribute("user", user);
+				return"chats.html";
+			}
 		}
-		
+//		model.addAttribute("mesagges", msgs);
+//		model.addAttribute("newMsg", new LetterModel());
+//		model.addAttribute("chatSelected", chat);
 		model.addAttribute("user", user);
 		model.addAttribute("chats", chats);
-		model.addAttribute("mesagges", translatedMsg);
-		model.addAttribute("newMsg", new LetterModel());
-		
-		return "templates/chats";
+		return "chats.html";
 	}
-	
 	
 	@PostMapping("/sendMsg")
 	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, 
-		@ModelAttribute("chats") ChatModel chat, 
-		@ModelAttribute("user") UserModel userLogin,
-		@CookieValue(name = "TokenCookie") String userToken,
-		Model model) {
+        @ModelAttribute("chats") ChatModel chat, 
+        @ModelAttribute("user") UserModel userLogin, 
+        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+        Model model) {
 		if(msg.getContent()!=null) {
 			msg.setChat(chat);
 			msg.setUser(userLogin);
-			letS.createLetter(msg,userToken);
+			letS.createLetter(msg,TokenCookie);
 		}
 		model.addAttribute("user", userLogin);
 		model.addAttribute("idChat",chat.getId());
@@ -94,53 +78,51 @@ public class ChatController {
 	}
 	
 	@PostMapping("/profile")
-	public String profileView(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		return "redirect:/users/profile"; 
+	public String profileView(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		return "redirect:/users/profile/"+idUser; 
 	}
 	
 	@PostMapping("/createChatView")
-	public String goCreateChat(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		return "redirect:/createChat";
+	public String goCreateChat(@ModelAttribute("user") UserModel userLogin) {
+		long idUser = userLogin.getId();
+		return "redirect:/createChat/"+idUser;
 	}
 	
-	@GetMapping("/createChat")
-	public String createChatView(Model model, @ModelAttribute("user") UserModel userLogin) {
+	@GetMapping("/createChat/{idUser}")
+	public String createChatView(Model model, 
+        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+        @PathVariable("idUser") long idUser) {
+			
+		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		model.addAttribute("integrator", new UserModel());
 		model.addAttribute("user", userLogin);
-		model.addAttribute("chat", new ChatModel());
+//		model.addAttribute("chat", new ChatModel());
 		return "create_chats";
 	}
 	
 	@PostMapping("/createChat")
-	public String createChat(Model model, @ModelAttribute("user") UserModel userLogin, 
-		@CookieValue(name = "TokenCookie") String userToken,
-		@ModelAttribute("integrator") UserModel integrator, @ModelAttribute("chat") ChatModel chat) {
-		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),userToken);
+	public String createChat(@ModelAttribute("user") UserModel userLogin, 
+        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,    
+        @ModelAttribute("integrator") UserModel integrator, 
+        @ModelAttribute("chat") ChatModel chat) {
+		long idUser = userLogin.getId();
+		long idChat = 1;		
+		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),TokenCookie);
 		if(user2!=null) {
-			chatS.createChat(chat,userToken);
+			chatS.createChat(chat,TokenCookie);
 			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
 			chatS.addIntegrator(chat, user2);
-			model.addAttribute("user", userLogin);
-			model.addAttribute("id_chat",chat.getId());
-			return "redirect:/principal";
+			return "redirect:/principal/"+idUser+"/"+idChat;
 		} else 
-			model.addAttribute("user", userLogin);
-			return "redirect:/createChat";	
+			return "redirect:/createChat/"+idUser;	
 	}
 	
 	@PostMapping("/delete")
-	public String deleteUser(@ModelAttribute("user") UserModel userLogin,
-		 @CookieValue(name = "TokenCookie") String userToken) {
-		userS.deleteUser(userLogin.getId(),userToken);
+	public String deleteUser(@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+        @ModelAttribute("user") UserModel userLogin) {
+		userS.deleteUser(userLogin.getId(),TokenCookie);
 		return "redirect:/index/login";
 	}
 	
-	@PostMapping("/back")
-	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat", 1);
-		return "redirect:/principal";
-	}
 }

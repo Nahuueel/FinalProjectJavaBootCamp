@@ -1,5 +1,7 @@
 package messengasesMvc.mvc_messenges.Model;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +16,7 @@ public class UserModel {
     private String password;
     private String fullName;
     private String languaje;    
+    private Date updatedDate;
+    private boolean state;
+    private Date createdDate;
 }

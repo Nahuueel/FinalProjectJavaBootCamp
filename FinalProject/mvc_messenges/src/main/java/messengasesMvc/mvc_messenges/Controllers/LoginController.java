@@ -32,7 +32,7 @@ public class LoginController {
 	public String login(@ModelAttribute("user") UserModel userLogin, HttpServletResponse response, Model model) {
 
 		String token = userS.login(userLogin);
-		
+
 		Cookie uiTokenCookie = new Cookie("TokenCookie", token);
             uiTokenCookie.setMaxAge(60 * 60);
             uiTokenCookie.setSecure(true);
@@ -40,10 +40,13 @@ public class LoginController {
             uiTokenCookie.setPath("/");
 
 		response.addCookie(uiTokenCookie);
+
+		System.out.println(token);
 		
-//		UserModel user = userS.getUserByUsername(userLogin.getUsername(),userToken);
-		model.addAttribute(userLogin);
-		return "redirect:/chats/principal";	
+		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
+		long idUser = user.getId();
+		long idChat = 1;
+		return "redirect:/chats/principal/"+idUser+"/"+idChat;	
 	}
 	
 	@GetMapping("/signup")
@@ -57,9 +60,7 @@ public class LoginController {
 		@CookieValue(name = "TokenCookie") String userToken,
 		Model model) {
 		if(userS.createUser(userLogin,userToken)) {
-			model.addAttribute("user",userLogin);
-		//	model.addAttribute("idChat",1);
-			return "redirect:/index/login";			
+			return "redirect:/login";			
 		}
 		else
 			return "redirect:/signup";	//En el html hacer el href en vez del onclick para poder cargar el model

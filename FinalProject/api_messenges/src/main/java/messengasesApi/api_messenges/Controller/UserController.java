@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
@@ -38,9 +39,9 @@ public class UserController {
 			return ResponseEntity.badRequest().body(user);
 	}
 	
-	@GetMapping("/byUsername")
-	public ResponseEntity<Users> getByUsername(@RequestBody String username){
-		Users user = userService.getByUsername(username);
+	@PostMapping("/byUsername")
+	public ResponseEntity<Users> getByUsername(@RequestBody String username){ 
+		Users user = userService.getByUsername(username); 
 		if(user!= null) 
 			return ResponseEntity.ok().body(user);
 		else

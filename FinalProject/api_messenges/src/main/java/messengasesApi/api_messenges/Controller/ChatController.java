@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Integrators;
-import messengasesApi.api_messenges.Model.Users;
 import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.UserService;
 
@@ -37,7 +36,7 @@ public class ChatController {
 		if(chat!=null) 
 			return ResponseEntity.ok().body(chat);
 		else 
-			return ResponseEntity.badRequest().body("Error");	
+			return ResponseEntity.badRequest().body("Error_Chat_By_id");	
 	}
 	
 	@GetMapping("/chatsByUser/{id_user}")

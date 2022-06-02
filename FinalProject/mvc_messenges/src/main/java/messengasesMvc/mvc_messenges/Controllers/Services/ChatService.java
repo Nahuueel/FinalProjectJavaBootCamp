@@ -18,80 +18,102 @@ import messengasesMvc.mvc_messenges.Model.UserModel;
 @Service
 public class ChatService {
 
-
-	
 	@Autowired
 	private RestTemplate fetch;
 	
-	@Autowired
-	private HttpHeaders header;
-	
-	@Autowired
-    private CookieService cookie;
-	
-	private StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
-	
-	//Consultar con nico el tema de enviar token a travez del header
 	public ChatModel getChatByUser(UserModel user, String token) {
-	//	String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
+
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		header.setBearerAuth(token);
-		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/chatsByUser/" + user.getId()).toString(),HttpMethod.GET ,entity ,ChatModel.class);
-		return response.getBody();
+
+		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity ,ChatModel.class);
+		return response.getBody(); 
+	}
+
+	public List<ChatModel> getChatFromUser(UserModel user, String token){
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
+
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+		
+		HttpEntity<String> entity = new HttpEntity<>(header);  
+		ResponseEntity<Mapper> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET ,entity ,Mapper.class);
+		return response.getBody().getListaChats();
 	}
 	
 	public List<ChatModel> getUsersByChat(UserModel user, String token){
-	//	String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/users/usersFromChats/").append(user.getId());
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		header.setBearerAuth(token);
-		ResponseEntity<Mapper> response = fetch.exchange(url.append("/usersFromChats/" + user.getId()).toString(),HttpMethod.GET ,entity,Mapper.class);
+		ResponseEntity<Mapper> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,Mapper.class);
 		return response.getBody().getListaChats();
 	}
 	
 	
 	public ChatModel getChatById(long id, String token) {
-	//	String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/").append(id);
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		header.setBearerAuth(token);
-		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/" + id).toString(),HttpMethod.GET ,entity,ChatModel.class);
+		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,ChatModel.class);
 		return response.getBody();
 	}
 	
 	public void addIntegrator(ChatModel chat, UserModel user) {
-		ResponseEntity<?> response = fetch.postForEntity(url.append("/addUserToChat/" + user.getId()
-		+ "/" + chat.getId()).toString()
-				, user, null);
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/addUserToChat/").append(user.getId() + "/" + chat.getId());
+		ResponseEntity<?> response = fetch.postForEntity(url.toString(), user, null);
 	}
 	
 	public List<LetterModel> getLetterByChat(ChatModel chat, String token) {
-//		String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages/byChat/").append(chat.getId());
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		header.setBearerAuth(token);
-		ResponseEntity<Mapper> response = fetch.exchange(url.append("/byChats/" + chat.getId()).toString(),HttpMethod.GET,entity ,Mapper.class);
+		ResponseEntity<Mapper> response = fetch.exchange(url.toString(),HttpMethod.GET,entity ,Mapper.class);
 		return response.getBody().getListaMensaje();
 	}
 
 	public boolean createChat(ChatModel chatcito, String token) {
-//		String token = cookie.readCookie("");
-		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito, header);
-		header.setBearerAuth(token);
-		ResponseEntity<ChatModel> response = fetch.exchange(url.append("/createChat").toString(), HttpMethod.POST, entity, ChatModel.class);
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/createChat");
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
+		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);  
+
+		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(), HttpMethod.POST, entity, ChatModel.class);
 		return response.getBody().equals("Chat Saved");
 	}
 	
 	
 	public void updateChat(ChatModel chatcito, String token) {
-//		String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
+
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);
-		header.setBearerAuth(token);
 		fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
 	}
 	
 	public void deleteChat(long id, String token) {
-//		String token = cookie.readCookie("");
+		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/").append(id);
+		
+		HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(token);
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		header.setBearerAuth(token);
-		fetch.exchange(url.append("/" + id).toString(),HttpMethod.DELETE, entity, String.class);
+		fetch.exchange(url.toString(),HttpMethod.DELETE, entity, String.class);
 	}
 
 	
