@@ -1,5 +1,6 @@
 package messengasesMvc.mvc_messenges;
 
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -64,6 +65,14 @@ class MvcMessengesApplicationTests {
 		assertFalse(result);
 	}
 	
+=======
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MvcMessengesApplicationTests {
+
+>>>>>>> Ariel's-Branch
 	@Test
 	void contextLoads() {
 	}
