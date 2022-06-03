@@ -1,15 +1,18 @@
 package messengasesMvc.mvc_messenges.Controllers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import messengasesMvc.mvc_messenges.Controllers.services.UserService;
+import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
 @Controller
@@ -19,8 +22,6 @@ public class LoginController {
 	@Autowired 
 	private UserService userS;
 	
-	private String token;
-	
 	@GetMapping("/login")
 	public String loginTemplate(Model model) {
 		model.addAttribute("user", new UserModel());
@@ -28,19 +29,23 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signin")
-	public String login(@ModelAttribute("user") UserModel userLogin, Model model) {
-//		try {
-//			token = userS.login(user);
-//			redAt.addFlashAttribute("token", token);
-//			
-//			return "redirect:/chats/principal/1/"+user.getUsername();
-//		} catch(Exception e) {
-//			return "redirect:/login";
+	public String login(@ModelAttribute("user") UserModel userLogin, HttpServletResponse response, Model model) {
+
+		String token = userS.login(userLogin);
+
+		Cookie uiTokenCookie = new Cookie("TokenCookie", token);
+            uiTokenCookie.setMaxAge(60 * 60);
+            uiTokenCookie.setSecure(true);
+            uiTokenCookie.setHttpOnly(true);
+            uiTokenCookie.setPath("/");
+
+		response.addCookie(uiTokenCookie);
+
+		System.out.println(token);
 		
-//		}
-		UserModel user = userS.getUserByUsername(userLogin.getUsername());
-		model.addAttribute(user);
-		return "redirect:/chats/principal";	
+		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
+		long idUser = user.getId();
+		return "redirect:/chats/principal/"+idUser;	
 	}
 	
 	@GetMapping("/signup")
@@ -50,14 +55,12 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(@ModelAttribute("user") UserModel userLogin, Model model) {
+	public String signUp(@ModelAttribute("user") UserModel userLogin,
+		Model model) {
 		if(userS.createUser(userLogin)) {
-			model.addAttribute("user",userLogin);
-			model.addAttribute("idChat",1);
 			return "redirect:/login";			
 		}
 		else
-			return "redirect:/signup";	//En el html hacer el href en vez del onclick para poder cargar el model
-										//aca tambien puede tirar un error con una ventanita o toast o algo
+			return "redirect:/signup";
 	}
 }

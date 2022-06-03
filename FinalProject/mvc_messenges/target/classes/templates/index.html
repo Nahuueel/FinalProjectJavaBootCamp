@@ -16,10 +16,10 @@
         </h1>
     </div>
     <div layout:fragment="BODY">
-        <form th:action="@{/signin}" th:object="${user}" method="POST">
+        <form th:action="@{/index/signin}" th:object="${user}" method="POST">
             <div class="field-container">
                 <label>
-                        Username
+                    Username
                 </label>
                 <input type="text" th:field="*{username}"/>
             </div>
@@ -29,10 +29,10 @@
                 </label>
                 <input type="password" th:field="*{password}"/>
             </div>
-            <button class="button-up" type="button" submit>
+            <button class="button-up" type="submit">
                 Sign in
             </button>
-            <a th:href="@{/signup}" class="button-down">
+            <a th:href="@{/index/signup}" class="button-down">
                 Sign Up
             </a>
         </form>

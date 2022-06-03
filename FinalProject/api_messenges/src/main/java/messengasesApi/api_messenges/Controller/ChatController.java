@@ -35,7 +35,7 @@ public class ChatController {
 		if(chat!=null) 
 			return ResponseEntity.ok().body(chat);
 		else 
-			return ResponseEntity.badRequest().body("Error");	
+			return ResponseEntity.badRequest().body("Error_Chat_By_id");	
 	}
 	
 	@GetMapping("/chatsByUser/{id_user}")
