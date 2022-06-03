@@ -32,21 +32,23 @@
             <a th:href="@{/index/logout}" class="btn-create">
                 LogOut
             </a>
-            <div th:if="${chat != null}" class="chat">   
-                <div th:if="${msg!=null}" class="messages" th:each="message: ${msg}">
-                    <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
+                <div th:if="${chat != null}" class="chat">  
+                    <div th:if="${msg!=null}" class="messages" >
+                        <div th:each="message: ${msg}">
+                            <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${message.content}"></div>
+                        </div>
+                    </div>
+                    <div th:if="${msg==null}" class="messages" >
+                            <div th:class="message-one">you have no messages.</div>
+                    </div>
+                    <form class="messages-form" th:action="@{/chats/sendMsg}" th:object="${newMsg}" method="post">
+                        <input type="hidden" th:field="*{idUser}" th:value="${newMsg.idUser}"/>
+                        <input type="hidden" th:field="*{idChat}" th:value="${newMsg.idChat}"/>
+                        <input type="text" th:field="*{content}" />
+                        <button class="send" type="submit">Send</button>
+                    </form>
                 </div>
-                <div th:if="${msg==null}" class="messages" >
-                        <div th:class="message-one">you have no messages.</div>
-                </div>
-                <form class="messages-form" th:action="@{/chats/sendMsg}" th:object="${newMsg}" method="post">
-                    <input type="hidden" th:field="*{idUser}" th:value="${newMsg.idUser}" />
-                    <input type="hidden" th:field="*{idChat}" th:value="${newMsg.idChat}"/>
-                    <input type="text" th:field="*{content}" />
-                    <button class="send" type="submit">Send</button>
-                </form>
-            </div>
-            <div th:if="${chat == null}" class="chat" style="align-items:center;">
+            <div th:if="${chat == null}" class="chat" style="align-items:center">
                 <div class="contacts-dropdown" >
                     <div th:if="${chat==null}">
                         <b class="contact" style="display:block;">No Chat.</b>

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.cloud.translate.Translate;
@@ -20,9 +21,12 @@ import com.google.cloud.translate.Translation;
 @Data
 public class LetterModel {
 	private long id;
-    private long idUser;
-    private long idChat;
+    private UserModel user;
+    private ChatModel chat; 
     private String content;
+    private Date sendedDate;
+    private Date updatedDate; 
+    
 
     /* 
     public void translate() {

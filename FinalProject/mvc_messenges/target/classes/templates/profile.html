@@ -62,9 +62,9 @@
                     <a class="button-down" th:href="@{/chats/principal(username = ${username})}">
                         Delete
                     </a>
-                    <a class="button-down" th:href="@{/chats/principal/{idUser} (idUser = ${user.id})}">
-                        Go back
-                    </a>
+                    <a class="button-down" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
+		                    Go back   
+		            </a>
             </form>
         </div>
     </body>

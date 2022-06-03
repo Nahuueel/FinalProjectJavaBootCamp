@@ -36,9 +36,8 @@ public class LoginController {
 		cookS.createCoockie(token);
 		
 		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
-		long idUser = user.getId();
 		
-		return "redirect:/chats/principal/"+idUser+"/0";	
+		return "redirect:/chats/principal/"+user.getId()+"/0";	
 	} catch (Exception e) {
 		return "redirect:/index/login";
 	}

@@ -1,5 +1,6 @@
 package messengasesApi.api_messenges.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import messengasesApi.api_messenges.Model.Chats;
+import messengasesApi.api_messenges.Model.ChatsList;
 import messengasesApi.api_messenges.Model.Integrators;
 import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.UserService;
@@ -40,9 +41,10 @@ public class ChatController {
 	}
 	
 	@GetMapping("/chatsByUser/{id_user}")
-	public ResponseEntity<List<Chats>> getAllChatsByUser(@PathVariable("id_user") long id){
-		List<Chats> chats = userService.getAllChatsByUser(id);
-		if(!chats.isEmpty())
+	public ResponseEntity<ChatsList> getAllChatsByUser(@PathVariable("id_user") long id){
+		ChatsList chats = new ChatsList();
+		chats.setChats(userService.getAllChatsByUser(id));
+		if(!chats.getChats().isEmpty())
 			return ResponseEntity.ok().body(chats);
 		else 
 			return ResponseEntity.badRequest().body(chats);

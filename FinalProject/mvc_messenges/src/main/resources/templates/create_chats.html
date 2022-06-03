@@ -18,12 +18,17 @@
             <h1>
                 Create Chat
             </h1>
+            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
+                <i>
+                    Go back
+                </i>
+            </a>
         </div>
         <div layout:fragment="BODY">
             <form th:action="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
-                <input type="hidden" th:field="*{IdUserC}" th:value="${chatDTO.IdUserC}">
                 <div class="field-container">
-                    <label> 
+                <input type="number" th:field="*{idUserC}" th:value="${user.id}" hidden>
+                    <label>
                         Name Chat
                     </label>
                     <input type="text" th:field="*{chatName}"/>

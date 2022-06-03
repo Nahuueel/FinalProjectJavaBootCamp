@@ -1,6 +1,5 @@
 package messengasesMvc.mvc_messenges.Controllers.Services;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.LetterDTO;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.LettersList;
 import messengasesMvc.mvc_messenges.Model.UserModel;
@@ -42,7 +42,7 @@ public class LetterService {
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
 		ResponseEntity<LettersList> response = fetch.exchange(url.append("/byUser/" + user.getId()).toString(), HttpMethod.GET ,entity,LettersList.class);
-		return response.getBody().getMsgs();
+		return response.getBody().getMsgs(); 
 	}
 	
 
@@ -56,9 +56,9 @@ public class LetterService {
 	
 	
 
-	public boolean createLetter (LetterModel mensajito, String token) {
+	public boolean createLetter (LetterDTO mensajito, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
-		HttpEntity<LetterModel> entity = new HttpEntity<>(mensajito,header);
+		HttpEntity<String> entity = new HttpEntity<>(mensajito.getContent(),header);
 		header.setBearerAuth(token);
 		ResponseEntity<String> response = fetch.exchange(url.append("/"+mensajito.getIdUser()+"/"+mensajito.getIdChat()).toString(), HttpMethod.POST ,entity, String.class);
 		return response.getBody().equals("Message saved");

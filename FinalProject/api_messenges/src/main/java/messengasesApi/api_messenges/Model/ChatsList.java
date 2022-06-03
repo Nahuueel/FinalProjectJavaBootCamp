@@ -1,17 +1,18 @@
-package messengasesMvc.mvc_messenges.Model;
+package messengasesApi.api_messenges.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
 
-
 @Data
 public class ChatsList {
-	private List<ChatModel> chats;
+	private List<Chats> chats;
 	
 	public ChatsList() {
-		chats = new ArrayList<ChatModel>();
+		chats = new ArrayList<Chats>();
 	}
+	
+	
 	
 }

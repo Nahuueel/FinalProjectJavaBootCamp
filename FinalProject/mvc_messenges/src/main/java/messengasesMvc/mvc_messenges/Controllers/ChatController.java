@@ -15,6 +15,7 @@ import messengasesMvc.mvc_messenges.Controllers.Services.ChatService;
 import messengasesMvc.mvc_messenges.Controllers.Services.LetterService;
 import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.LetterDTO;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 import messengasesMvc.mvc_messenges.Model.createChatDTO;
@@ -43,10 +44,9 @@ public class ChatController {
 		ArrayList<ChatModel> chats = new ArrayList<>();
 		ChatModel chat = null;
 		ArrayList<LetterModel> letters = new ArrayList<>();
-		LetterModel letter = new LetterModel();
+		LetterDTO letter = new LetterDTO();
 		letter.setIdUser(idUser);
 		letter.setIdChat(idChat);
-		
 		try {
 			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
 		} catch(Exception e){
@@ -60,10 +60,13 @@ public class ChatController {
 			model.addAttribute("chats", chats);
 			return "chats";
 		}
+
+		
 		
 		try {
 			letters = (ArrayList<LetterModel>) letS.getLetterByChat(chat, TokenCookie);
 		} catch(Exception e) {
+			System.out.println(e);
 			model.addAttribute("user", user);
 			model.addAttribute("chats", chats);
 			model.addAttribute("chat", chat);
@@ -71,6 +74,7 @@ public class ChatController {
 			return "chats";
 		}
 		
+		System.out.println("!2!");
 		model.addAttribute("newMsg", letter);
 		model.addAttribute("chat", chat);
 		model.addAttribute("msg", letters);
@@ -81,7 +85,7 @@ public class ChatController {
 	}
 	
 	@PostMapping("/sendMsg")
-	public String sendChat(	@ModelAttribute("newMsg") LetterModel msg,
+	public String sendChat(	@ModelAttribute("newMsg") LetterDTO msg,
 							@CookieValue(name = "TokenCookie",required=true) String TokenCookie) {
 		
 		
@@ -102,9 +106,9 @@ public class ChatController {
 	
 	@PostMapping("/createChat")
 	public String createChat( 
-        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,    
+        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
         @ModelAttribute("chatDTO") createChatDTO chatDto) {
-		
+
 		UserModel userLogin = userS.getUserById(chatDto.getIdUserC(), TokenCookie);
 		UserModel integrator = userS.getUserByUsername(chatDto.getIntegratorUsername(), TokenCookie);
 
@@ -125,8 +129,8 @@ public class ChatController {
 	public String createChatView(Model model, 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
         @PathVariable("idUser") long idUser) {
-		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		
+		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		createChatDTO newChat = new createChatDTO();
 		newChat.setIdUserC(idUser);		
 
@@ -134,12 +138,7 @@ public class ChatController {
 		model.addAttribute("user", userLogin);
 		return "create_chats";
 	}
-	/* 
-	@PostMapping("/delete")
-	public String deleteUser(@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
-        @ModelAttribute("user") UserModel userLogin) {
-		userS.deleteUser(userLogin.getId(),TokenCookie);
-		return "redirect:/index/login";
-	}
-	*/
+	
+
+	
 }

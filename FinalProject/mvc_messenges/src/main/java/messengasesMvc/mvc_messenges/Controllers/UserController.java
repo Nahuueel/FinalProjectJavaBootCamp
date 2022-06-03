@@ -21,10 +21,12 @@ public class UserController {
 	private UserService userS;
 	
 	@GetMapping("/profile/{idUser}")
-	public String profileView(@PathVariable("idUser") long idUser, Model model,
-		@CookieValue(name = "TokenCookie") String userToken
-	) {
-		model.addAttribute("user", userS.getUserById(idUser, userToken));
+	public String profileView(	@PathVariable("idUser") long idUser, 
+								@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+								Model model) {
+		
+		
+		model.addAttribute("user", userS.getUserById(idUser, TokenCookie));
 		return "profile";
 	}
 	
@@ -48,15 +50,8 @@ public class UserController {
 	public String deleteUser(@ModelAttribute("user")UserModel userLogin,
 	@CookieValue(name = "TokenCookie") String userToken) {
 		userS.deleteUser(userLogin.getId(),userToken);
+		
 		return "redirect:/index/login";
 	}
 	
-	/* 
-	@PostMapping("/back")
-	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat", 1);
-		return "redirect:/chats/principal";
-	}
-	*/
 }
