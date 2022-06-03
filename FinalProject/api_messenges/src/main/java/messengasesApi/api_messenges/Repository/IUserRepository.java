@@ -24,4 +24,5 @@ public interface IUserRepository extends JpaRepository<Users, Long>{
 	@Modifying
 	@Query(value = "UPDATE users SET state = false WHERE id = :id", nativeQuery = true)
 	public void deleteById(@Param("id") long id);
+	
 }

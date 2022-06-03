@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,9 +20,11 @@ public class UserController {
 	@Autowired
 	private UserService userS;
 	
-	@GetMapping("/profile")
-	public String profileView(@ModelAttribute("user") UserModel userLogin, Model model) {
-		model.addAttribute("user", userLogin);
+	@GetMapping("/profile/{idUser}")
+	public String profileView(@PathVariable("idUser") long idUser, Model model,
+		@CookieValue(name = "TokenCookie") String userToken
+	) {
+		model.addAttribute("user", userS.getUserById(idUser, userToken));
 		return "profile";
 	}
 	
@@ -29,13 +32,16 @@ public class UserController {
 	public String modifyUser(@ModelAttribute("user") UserModel userLogin, 
 		@CookieValue(name = "TokenCookie") String userToken,
 		Model model) {
-		model.addAttribute("user", userLogin);
+
+		UserModel tempuser = new UserModel();
+		tempuser = userS.getUserById(userLogin.getId(), userToken);
+		userLogin.setCreatedDate(tempuser.getCreatedDate());
+	
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
-			model.addAttribute("idChat", 1);
-			return "redirect:/chats/principal"; 
-		} else 
-			return "redirect:/profile";
+			return "redirect:/index/login"; 
+		}
+			return "redirect:/profile/"+userLogin.getId();
 	}
 	
 	@PostMapping("/delete")

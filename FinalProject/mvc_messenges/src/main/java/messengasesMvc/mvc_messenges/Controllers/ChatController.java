@@ -51,7 +51,7 @@ public class ChatController {
 		*/
 		model.addAttribute("user", user);
 //		model.addAttribute("chats", chats);
-		return "chats.html";
+		return "chats";
 	}
 	
 	@PostMapping("/sendMsg")
@@ -70,11 +70,12 @@ public class ChatController {
 		return "redirect:/principal";
 	}
 	
+	/* 
 	@PostMapping("/profile")
 	public String profileView(@ModelAttribute("user") UserModel userLogin) {
 		long idUser = userLogin.getId();
 		return "redirect:/users/profile/"+idUser; 
-	}
+	}*/
 	
 	@PostMapping("/createChat")
 	public String createChat( 
@@ -83,6 +84,7 @@ public class ChatController {
 		
 		UserModel userLogin = userS.getUserById(chatDto.getIdUserC(), TokenCookie);
 		UserModel integrator = userS.getUserByUsername(chatDto.getIntegratorUsername(), TokenCookie);
+
 		ChatModel chat = new ChatModel();
 		chat.setName(chatDto.getChatName()); 
 		chat = chatS.createChat(chat, TokenCookie);
@@ -106,7 +108,7 @@ public class ChatController {
 		newChat.setIdUserC(idUser);		
 
 		model.addAttribute("chatDTO", newChat);
-		model.addAttribute("User", userLogin);
+		model.addAttribute("user", userLogin);
 		return "create_chats";
 	}
 	

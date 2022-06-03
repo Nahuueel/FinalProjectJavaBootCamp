@@ -29,6 +29,9 @@
             <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
                 Profile
             </a>
+            <a th:href="@{/index/logout}" class="btn-create">
+                LogOut
+            </a>
             <div th:if="${chat != null}" class="chat">   
                     <div th:if="${msg!=null}" class="messages" th:each="message: ${msg}">
                         <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
@@ -48,9 +51,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div th:if="${chats!=null}">
-            <div th:text="${falopa}">
         </div>
     </body>
 </html>

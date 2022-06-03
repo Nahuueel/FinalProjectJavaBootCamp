@@ -18,11 +18,6 @@
             <h1>
                 Create Chat
             </h1>
-            <a class="profile" th:href="@{/chats/principal/{idUser} (idUser = ${User.id})}">
-                <i>
-                    Go back
-                </i>
-            </a>
         </div>
         <div layout:fragment="BODY">
             <form th:action="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
@@ -42,7 +37,10 @@
                 <button class="button-up" type="submit">
                     Create Chat
                 </button>
-            </form>
+                    <a class="button-down" th:href="@{/chats/principal/{idUser} (idUser = ${user.id})}">
+                        Go back
+                    </a>
+                </form>
         </div>
     </body>
 </html>

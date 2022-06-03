@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import messengasesMvc.mvc_messenges.Controllers.Services.CookieService;
 import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
@@ -22,6 +23,9 @@ public class LoginController {
 	@Autowired 
 	private UserService userS;
 	
+	@Autowired
+	private CookieService cookS;
+
 	@GetMapping("/login")
 	public String loginTemplate(Model model) {
 		model.addAttribute("user", new UserModel());
@@ -29,20 +33,12 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signin")
-	public String login(@ModelAttribute("user") UserModel userLogin, HttpServletResponse response, Model model) {
+	public String login(@ModelAttribute("user") UserModel userLogin, Model model) {
 
 		String token = userS.login(userLogin);
 
-		Cookie uiTokenCookie = new Cookie("TokenCookie", token);
-            uiTokenCookie.setMaxAge(60 * 60);
-            uiTokenCookie.setSecure(true);
-            uiTokenCookie.setHttpOnly(true);
-            uiTokenCookie.setPath("/");
+		cookS.createCoockie(token);
 
-		response.addCookie(uiTokenCookie);
-
-		System.out.println(token);
-		
 		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
 		long idUser = user.getId();
 		return "redirect:/chats/principal/"+idUser;	
@@ -61,5 +57,11 @@ public class LoginController {
 		}
 		else
 			return "redirect:/index/signup";
+	}
+
+	@GetMapping("/logout")
+	public String logout(){
+		cookS.deleteCookie();
+		return "redirect:/index/login";
 	}
 }

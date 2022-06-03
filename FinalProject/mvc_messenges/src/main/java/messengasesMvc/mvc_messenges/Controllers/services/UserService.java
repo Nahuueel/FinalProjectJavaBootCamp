@@ -17,11 +17,6 @@ public class UserService {
     @Autowired
     private RestTemplate fetch;
     
-    @Autowired
-    private HttpHeaders header;
-    
-//    private StringBuilder url = new StringBuilder("http://localhost:8080/api");
-
     
     public String login(UserModel user) {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/login");
@@ -71,7 +66,7 @@ public class UserService {
 
 		HttpEntity<UserModel> entity = new HttpEntity<>(user,header);
         
-        fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
+        ResponseEntity<String> response = new RestTemplate().exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
         
     }
 
