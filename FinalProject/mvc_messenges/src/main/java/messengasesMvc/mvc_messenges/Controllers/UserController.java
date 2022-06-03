@@ -33,7 +33,7 @@ public class UserController {
 		@CookieValue(name = "TokenCookie") String userToken,
 		Model model) {
 		model.addAttribute("user", userLogin);
-		System.out.println(userLogin);
+		System.out.println(userLogin.getLanguage());
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
 			model.addAttribute("idChat", 1);

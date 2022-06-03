@@ -4,9 +4,6 @@ package messengasesMvc.mvc_messenges.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.Translate.TranslateOption;
 import com.google.cloud.translate.TranslateOptions;
@@ -25,11 +22,12 @@ public class LetterModel {
     private String content;
     
     
-    public void translate() {
+    public void translate(String targetLanguaje) {
     	Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyCZsohvyk3oB4aJdKNnjwYK02wKq2z7UvY").build().getService();
     	Translation translation = translate.translate(this.content,
-    			TranslateOption.sourceLanguage(this.content),
-    			TranslateOption.targetLanguage(this.user.getLanguaje()));
+    			TranslateOption.sourceLanguage(user.getLanguage()),
+                TranslateOption.targetLanguage(targetLanguaje)
+            );
     	
     	this.content = translation.getTranslatedText();
     }

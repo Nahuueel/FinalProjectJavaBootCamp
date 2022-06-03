@@ -43,7 +43,7 @@
                     </div>
                     <div class="field-container">
                         <label>Language</label>
-                        <select th:field="*{languaje}">
+                        <select th:field="*{language}">
                             <option th:value="es">Spanish</option>
                             <option th:value="pt">Portuguese</option>
                             <option th:value="en" selected>English</option>
@@ -62,7 +62,7 @@
                     <a class="button-down" th:href="@{/chats/principal(username = ${username})}">
                         Delete
                     </a>
-                    <a class="button-down" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 1)}">
+                    <a class="button-down" th:href="@{/chats/principal/{idUser} (idUser = ${user.id})}">
                         Go back
                     </a>
             </form>

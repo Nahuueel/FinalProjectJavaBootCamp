@@ -15,7 +15,7 @@ public class UserModel {
     private String username;
     private String password;
     private String fullName;
-    private String languaje;    
+    private String language;    
     private Date updatedDate;
     private boolean state;
     private Date createdDate;
