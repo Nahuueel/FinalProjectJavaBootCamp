@@ -37,7 +37,7 @@ public class UserController {
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
 			model.addAttribute("idChat", 1);
-			return "redirect:/chats/principal"; 
+			return "redirect:/chats/principal/" + userLogin.getId(); 
 		} else 
 			return "redirect:/profile";
 	}
