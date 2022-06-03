@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+    layout:decorate="~{skeletons/skeleton}">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign up</title>
+        <link rel="stylesheet" href="/styles/index.css">
+    </head>
+    <body>
+        <div layout:fragment="TITLE">
+            <h1>
+                Error 
+            </h1>
+        </div>
+       <div layout:fragment="BODY" style="display: flex; align-items: center; flex-direction: column; flex-wrap: wrap;">
+            <h2>Su session fue terminada o algo fallo </h2>
+            <a class="button-down" th:href="@{/index/login}" style="font-size: 1.25em; justify-self: center; margin: 0;">
+                Volver a iniciar session
+            </a>
+       </div>
+    </body>
+</html>

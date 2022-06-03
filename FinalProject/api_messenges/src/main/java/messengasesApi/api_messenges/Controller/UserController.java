@@ -85,7 +85,7 @@ public class UserController {
 	
 	@DeleteMapping("/{id_user}")
 	public ResponseEntity<?> delete(@PathVariable("id_user") long id ){
-		if(userService.delete(id))
+		if( userService.delete(id))
 			return ResponseEntity.ok().body("User Deleted");
 		else 
 			return ResponseEntity.badRequest().body("Error");

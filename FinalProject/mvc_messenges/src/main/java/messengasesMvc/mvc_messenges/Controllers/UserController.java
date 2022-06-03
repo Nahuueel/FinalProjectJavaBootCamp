@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import messengasesMvc.mvc_messenges.Controllers.Services.CookieService;
 import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
@@ -20,32 +21,42 @@ public class UserController {
 	@Autowired
 	private UserService userS;
 	
+	@Autowired
+	private CookieService cookS;
+	
 	@GetMapping("/profile/{idUser}")
 	public String profileView(	@PathVariable("idUser") long idUser, 
 								@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
 								Model model) {
 		
-		UserModel userLogin = userS.getUserById(idUser, TokenCookie);
-		model.addAttribute("user", userLogin);
+		
+		model.addAttribute("user", userS.getUserById(idUser, TokenCookie));
 		return "profile";
 	}
 	
 	@PostMapping("/modify")
 	public String modifyUser(@ModelAttribute("user") UserModel userLogin, 
-		@CookieValue(name = "TokenCookie") String userToken) {
-		
+		@CookieValue(name = "TokenCookie") String userToken,
+		Model model) {
+
+		UserModel tempuser = new UserModel();
+		tempuser = userS.getUserById(userLogin.getId(), userToken);
+		userLogin.setCreatedDate(tempuser.getCreatedDate());
+	
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
-			return "redirect:/chats/principal/"+userLogin.getId()+"/0"; 
-		} else 
-			return "redirect:/users/profile/"+userLogin.getId();
+			return "redirect:/index/login"; 
+		}
+			return "redirect:/profile/"+userLogin.getId();
 	}
 	
-	@PostMapping("/delete")
-	public String deleteUser(@ModelAttribute("user")UserModel userLogin,
+	@GetMapping("/delete/{idUser}")
+	public String deleteUser(@PathVariable("idUser") long idUser,
 	@CookieValue(name = "TokenCookie") String userToken) {
-		userS.deleteUser(userLogin.getId(),userToken);
 		
+		userS.deleteUser(idUser,userToken);
+		cookS.deleteCookie();
+				
 		return "redirect:/index/login";
 	}
 	

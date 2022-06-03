@@ -1,8 +1,5 @@
 package messengasesMvc.mvc_messenges.Controllers;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import messengasesMvc.mvc_messenges.Controllers.Services.CookieService;
 import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
@@ -21,6 +19,9 @@ public class LoginController {
 	@Autowired 
 	private UserService userS;
 	
+	@Autowired
+	private CookieService cookS;
+
 	@GetMapping("/login")
 	public String loginTemplate(Model model) {
 		model.addAttribute("user", new UserModel());
@@ -28,26 +29,18 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signin")
-	public String login(@ModelAttribute("user") UserModel userLogin, HttpServletResponse response, Model model) {
+	public String login(@ModelAttribute("user") UserModel userLogin, Model model) {
 		try {
-			String token = userS.login(userLogin);			
-			Cookie uiTokenCookie = new Cookie("TokenCookie", token);
-			uiTokenCookie.setMaxAge(60 * 60);
-			uiTokenCookie.setSecure(true);
-			uiTokenCookie.setHttpOnly(true);
-			uiTokenCookie.setPath("/");
-			
-			response.addCookie(uiTokenCookie);
-			
-			System.out.println(token);
-			
-			UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
-			long idUser = user.getId();
-			return "redirect:/chats/principal/"+idUser+"/1";	
-		} catch (Exception e) {
-			return "redirect:/index/login";
-		}
 
+		String token = userS.login(userLogin);
+		cookS.createCoockie(token);
+		
+		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
+		
+		return "redirect:/chats/principal/"+user.getId()+"/0";	
+	} catch (Exception e) {
+		return "redirect:/index/login";
+	}
 	}
 	
 	@GetMapping("/signup")
@@ -63,5 +56,11 @@ public class LoginController {
 		}
 		else
 			return "redirect:/index/signup";
+	}
+
+	@GetMapping("/logout")
+	public String logout(){
+		cookS.deleteCookie();
+		return "redirect:/index/login";
 	}
 }

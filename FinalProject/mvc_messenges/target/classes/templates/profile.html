@@ -18,23 +18,22 @@
             <h1>
                 Profile
             </h1>
-            
         </div>
         <div layout:fragment="BODY">
              <form th:action="@{/users/modify}" th:object="${user}" method="post">
-                    <input type="number" th:field="*{id}" hidden>
+                    <input type="number" th:field="*{id}" th:value="${user.id}" hidden>
                     <input type="checkbox" th:field="*{state}" th:value="${user.state}" hidden>
                     <div class="field-container">
                         <label>
                             FullName
                         </label>
-                        <input type="text" th:field="*{fullName}"/>
+                        <input type="text" th:field="*{fullName}" th:value="${user.fullName}"/>
                     </div>
                     <div class="field-container">
                         <label>
                             Username
                         </label>
-                        <input type="text" th:field="*{username}" />
+                        <input type="text" th:field="*{username}" th:value="${user.username}"/>
                     </div>
                     <div class="field-container">
                         <label>
@@ -60,9 +59,10 @@
                     <button class="button-up" type="submit">
                         Modify
                     </button>
-                    <a class="button-down" th:href="@{/chats/principal(username = ${username})}">
-                        Delete
-                    </a>
+                    
+                    <a class="button-down" th:href="@{/users/delete/{idUser} (idUser = ${user.id})}" >
+		                    Delete  
+		            </a>
                     <a class="button-down" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
 		                    Go back   
 		            </a>

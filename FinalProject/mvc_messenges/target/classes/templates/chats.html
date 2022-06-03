@@ -29,7 +29,7 @@
             <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
                 Profile
             </a>
-            <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
+            <a th:href="@{/index/logout}" class="btn-create">
                 LogOut
             </a>
             <div th:if="${chat != null}" class="chat">   
@@ -42,16 +42,16 @@
                             <div th:class="message-one">you have no messages.</div>
                     </div>
                     <form class="messages-form" th:action="@{/chats/sendMsg}" th:object="${newMsg}" method="post">
-                        <input type="hidden" th:field="*{idUser}" th:value="${newMsg.idUser}" />
+                        <input type="hidden" th:field="*{idUser}" th:value="${newMsg.idUser}"/>
                         <input type="hidden" th:field="*{idChat}" th:value="${newMsg.idChat}"/>
                         <input type="text" th:field="*{content}" />
                         <button class="send" type="submit">Send</button>
                     </form>
-            </div>
+                </div>
             <div th:if="${chat == null}" class="chat" style="align-items:center">
                 <div class="contacts-dropdown" >
                     <div th:if="${chat==null}">
-                        <b class="contact">No Chat.</b>
+                        <b class="contact" style="display:block;">No Chat.</b>
                     </div>
                 </div>
             </div>

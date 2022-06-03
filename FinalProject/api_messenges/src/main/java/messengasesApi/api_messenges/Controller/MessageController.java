@@ -55,8 +55,9 @@ public class MessageController {
 	}
 	
 	@GetMapping("/byChat/{id_chat}")
-	public ResponseEntity<List<Messages>> getAllByChat(@PathVariable("id_chat") long id){
-		List<Messages> messages = msgService.getAllByChat(id);
+	public ResponseEntity<MessagesList> getAllByChat(@PathVariable("id_chat") long id){
+		MessagesList messages = new MessagesList();
+		messages.setMsgs(msgService.getAllByChat(id));  
 		if(messages != null)
 			return ResponseEntity.ok().body(messages);
 		else 

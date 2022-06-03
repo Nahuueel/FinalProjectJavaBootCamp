@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.LetterDTO;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
 import messengasesMvc.mvc_messenges.Model.LettersList;
 import messengasesMvc.mvc_messenges.Model.UserModel;
@@ -23,21 +24,14 @@ public class LetterService {
 	private RestTemplate fetch;
 	
 	@Autowired
-	private CookieService cookie;
-	
-	@Autowired
 	private HttpHeaders header;
 	
-	//private StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
 	
-	
-
-
 	public List<LetterModel> getLetterByChat(ChatModel chats, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
-		System.out.println(url.append("/byChat/"+chats.getId()).toString());
+		//System.out.println(url.append("/byChat/"+chats.getId()).toString());
 		ResponseEntity<LettersList> response = fetch.exchange(url.append("/byChat/"+chats.getId()).toString(), HttpMethod.GET ,entity,LettersList.class);
 		return response.getBody().getMsgs();
 	}
@@ -49,7 +43,7 @@ public class LetterService {
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
 		ResponseEntity<LettersList> response = fetch.exchange(url.append("/byUser/" + user.getId()).toString(), HttpMethod.GET ,entity,LettersList.class);
-		return response.getBody().getMsgs();
+		return response.getBody().getMsgs(); 
 	}
 	
 
@@ -63,7 +57,7 @@ public class LetterService {
 	
 	
 
-	public boolean createLetter (LetterModel mensajito, String token) {
+	public boolean createLetter (LetterDTO mensajito, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
 		HttpEntity<String> entity = new HttpEntity<>(mensajito.getContent(),header);
 		header.setBearerAuth(token);

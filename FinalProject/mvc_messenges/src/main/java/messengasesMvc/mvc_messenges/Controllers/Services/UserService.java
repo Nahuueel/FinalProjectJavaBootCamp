@@ -17,11 +17,6 @@ public class UserService {
     @Autowired
     private RestTemplate fetch;
     
-    @Autowired
-    private HttpHeaders header;
-    
-//    private StringBuilder url = new StringBuilder("http://localhost:8080/api");
-
     
     public String login(UserModel user) throws Exception {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/login");
@@ -75,13 +70,18 @@ public class UserService {
 
 		HttpEntity<UserModel> entity = new HttpEntity<>(user,header);
         
-        fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
+        ResponseEntity<String> response = new RestTemplate().exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
         
     }
 
     public void deleteUser(long id, String token){
         StringBuilder url = new StringBuilder("http://localhost:8080/api/users");
-        fetch.delete(url.append("/" + id).toString());
+        HttpHeaders header = new HttpHeaders();
+        header.add("Authorization", "Bearer " + token);
+
+		HttpEntity<UserModel> entity = new HttpEntity<>(header);
+        
+        fetch.exchange(url.append("/" + id).toString(),HttpMethod.DELETE,entity,String.class);
     }
 
 	
