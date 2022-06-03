@@ -1,12 +1,8 @@
 package messengasesMvc.mvc_messenges.Controllers;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,14 +30,18 @@ public class LoginController {
 	
 	@PostMapping("/signin")
 	public String login(@ModelAttribute("user") UserModel userLogin, Model model) {
+		try {
 
 		String token = userS.login(userLogin);
-
 		cookS.createCoockie(token);
-
+		
 		UserModel user = userS.getUserByUsername(userLogin.getUsername(),token); 
 		long idUser = user.getId();
-		return "redirect:/chats/principal/"+idUser;	
+		
+		return "redirect:/chats/principal/"+idUser+"/0";	
+	} catch (Exception e) {
+		return "redirect:/index/login";
+	}
 	}
 	
 	@GetMapping("/signup")

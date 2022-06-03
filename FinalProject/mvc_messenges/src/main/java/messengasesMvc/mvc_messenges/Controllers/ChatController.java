@@ -33,41 +33,64 @@ public class ChatController {
 	private LetterService letS;
 	
 	
-	@GetMapping("/principal/{idUser}")
+	@GetMapping("/principal/{idUser}/{idChat}")
 	public String showChats(Model model, 
         @CookieValue(name = "TokenCookie",required=true) String TokenCookie, 
-        @PathVariable("idUser") long idUser) {
+        @PathVariable("idUser") long idUser,
+        @PathVariable("idChat") long idChat) {
 		
-		UserModel user = userS.getUserById(idUser,TokenCookie); 
-	/*	ArrayList<ChatModel> chats = new ArrayList<>();
-		try{
-			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user.getId(),TokenCookie);
-		}catch(Exception e){
-			if(e!=null){
-				model.addAttribute("user", user);
-				return"chats.html";
-			}
+		UserModel user = userS.getUserById(idUser,TokenCookie);
+		ArrayList<ChatModel> chats = new ArrayList<>();
+		ChatModel chat = null;
+		ArrayList<LetterModel> letters = new ArrayList<>();
+		LetterModel letter = new LetterModel();
+		letter.setIdUser(idUser);
+		letter.setIdChat(idChat);
+		
+		try {
+			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
+		} catch(Exception e){
+			model.addAttribute("user", user);
+			return "chats";
 		}
-		*/
+		try {
+			chat = chatS.getChatById(idChat, TokenCookie);
+		} catch(Exception e) {
+			model.addAttribute("user", user);
+			model.addAttribute("chats", chats);
+			return "chats";
+		}
+		
+		try {
+			letters = (ArrayList<LetterModel>) letS.getLetterByChat(chat, TokenCookie);
+		} catch(Exception e) {
+			model.addAttribute("user", user);
+			model.addAttribute("chats", chats);
+			model.addAttribute("chat", chat);
+			model.addAttribute("newMsg", letter);
+			return "chats";
+		}
+		
+		model.addAttribute("newMsg", letter);
+		model.addAttribute("chat", chat);
+		model.addAttribute("msg", letters);
+		model.addAttribute("chats", chats);
 		model.addAttribute("user", user);
-//		model.addAttribute("chats", chats);
 		return "chats";
+		
 	}
 	
 	@PostMapping("/sendMsg")
-	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, 
-        @ModelAttribute("chats") ChatModel chat, 
-        @ModelAttribute("user") UserModel userLogin, 
-        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
-        Model model) {
+	public String sendChat(	@ModelAttribute("newMsg") LetterModel msg,
+							@CookieValue(name = "TokenCookie",required=true) String TokenCookie) {
+		
+		
+		System.out.println(msg.getContent() + msg.getIdChat() + msg.getIdUser());
 		if(msg.getContent()!=null) {
-			msg.setChat(chat);
-			msg.setUser(userLogin);
 			letS.createLetter(msg,TokenCookie);
 		}
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat",chat.getId());
-		return "redirect:/principal";
+		
+		return "redirect:/chats/principal/"+msg.getIdUser()+"/"+msg.getIdChat();
 	}
 	
 	/* 
@@ -92,7 +115,7 @@ public class ChatController {
 		if(integrator!=null) {
 			chatS.addIntegrator(chat.getId(), userLogin.getId(), TokenCookie); 
 			chatS.addIntegrator(chat.getId(), integrator.getId(), TokenCookie);
-			return "redirect:/chats/principal/"+userLogin.getId();
+			return "redirect:/chats/principal/"+userLogin.getId()+"/0";
 		} else 
 			return "redirect:/chats/createChat/"+userLogin.getId();	
 		}
@@ -111,12 +134,12 @@ public class ChatController {
 		model.addAttribute("user", userLogin);
 		return "create_chats";
 	}
-	
+	/* 
 	@PostMapping("/delete")
 	public String deleteUser(@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
         @ModelAttribute("user") UserModel userLogin) {
 		userS.deleteUser(userLogin.getId(),TokenCookie);
 		return "redirect:/index/login";
 	}
-	
+	*/
 }

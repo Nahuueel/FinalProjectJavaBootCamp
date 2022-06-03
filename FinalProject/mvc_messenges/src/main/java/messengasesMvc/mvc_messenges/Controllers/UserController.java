@@ -51,10 +51,12 @@ public class UserController {
 		return "redirect:/index/login";
 	}
 	
+	/* 
 	@PostMapping("/back")
 	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
 		model.addAttribute("user", userLogin);
 		model.addAttribute("idChat", 1);
 		return "redirect:/chats/principal";
 	}
+	*/
 }

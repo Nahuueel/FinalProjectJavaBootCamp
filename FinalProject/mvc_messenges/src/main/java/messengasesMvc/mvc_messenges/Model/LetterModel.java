@@ -19,12 +19,12 @@ import com.google.cloud.translate.Translation;
 @AllArgsConstructor
 @Data
 public class LetterModel {
-    private long id;
-    private UserModel user;
-    private ChatModel chat;
+	private long id;
+    private long idUser;
+    private long idChat;
     private String content;
-    
-    
+
+    /* 
     public void translate() {
     	Translate translate = TranslateOptions.newBuilder().setApiKey("AIzaSyCZsohvyk3oB4aJdKNnjwYK02wKq2z7UvY").build().getService();
     	Translation translation = translate.translate(this.content,
@@ -33,4 +33,5 @@ public class LetterModel {
     	
     	this.content = translation.getTranslatedText();
     }
+    */
 }

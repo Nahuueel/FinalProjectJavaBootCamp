@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import messengasesMvc.mvc_messenges.Model.ChatModel;
+import messengasesMvc.mvc_messenges.Model.ChatsList;
 import messengasesMvc.mvc_messenges.Model.LetterModel;
+import messengasesMvc.mvc_messenges.Model.LettersList;
 import messengasesMvc.mvc_messenges.Model.UserModel;
 
 @Service
@@ -33,15 +35,15 @@ public class ChatService {
 		return response.getBody(); 
 	}
 
-	public List<ChatModel> getChatFromUser(long user, String token){
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user);
+	public List<ChatModel> getChatFromUser(UserModel user, String token){
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
 
         HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(token);
 		
 		HttpEntity<String> entity = new HttpEntity<>(header);  
-		ResponseEntity<Mapper> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET ,entity ,Mapper.class);
-		return response.getBody().getListaChats();
+		ResponseEntity<ChatsList> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET ,entity,ChatsList.class);
+		return response.getBody().getChats();
 	}
 	
 	public List<ChatModel> getUsersByChat(UserModel user, String token){
@@ -51,8 +53,8 @@ public class ChatService {
         header.setBearerAuth(token);
 
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		ResponseEntity<Mapper> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,Mapper.class);
-		return response.getBody().getListaChats();
+	//	ResponseEntity<> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,Mapper.class);
+		return null; // response.getBody().getListaChats();
 	}
 	
 	
@@ -85,8 +87,8 @@ public class ChatService {
         header.setBearerAuth(token);
 
 		HttpEntity<String> entity = new HttpEntity<>(header);
-		ResponseEntity<Mapper> response = fetch.exchange(url.toString(),HttpMethod.GET,entity ,Mapper.class);
-		return response.getBody().getListaMensaje();
+		ResponseEntity<LettersList> response = fetch.exchange(url.toString(),HttpMethod.GET,entity ,LettersList.class);
+		return response.getBody().getMsgs();
 	}
 
 	public ChatModel createChat(ChatModel chatcito, String token) {
