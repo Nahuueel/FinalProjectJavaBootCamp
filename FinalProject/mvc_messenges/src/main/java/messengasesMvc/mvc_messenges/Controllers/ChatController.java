@@ -43,6 +43,9 @@ public class ChatController {
 		ArrayList<ChatModel> chats = new ArrayList<>();
 		ChatModel chat = null;
 		ArrayList<LetterModel> letters = new ArrayList<>();
+		LetterModel letter = new LetterModel();
+		letter.setIdUser(idUser);
+		letter.setIdChat(idChat);
 		
 		try {
 			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
@@ -64,11 +67,11 @@ public class ChatController {
 			model.addAttribute("user", user);
 			model.addAttribute("chats", chats);
 			model.addAttribute("chat", chat);
-			model.addAttribute("newMsg", new LetterModel());
+			model.addAttribute("newMsg", letter);
 			return "chats";
 		}
 		
-		model.addAttribute("newMsg", new LetterModel());
+		model.addAttribute("newMsg", letter);
 		model.addAttribute("chat", chat);
 		model.addAttribute("msg", letters);
 		model.addAttribute("chats", chats);
@@ -80,7 +83,9 @@ public class ChatController {
 	@PostMapping("/sendMsg")
 	public String sendChat(	@ModelAttribute("newMsg") LetterModel msg,
 							@CookieValue(name = "TokenCookie",required=true) String TokenCookie) {
-	
+		
+		
+		System.out.println(msg.getContent() + msg.getIdChat() + msg.getIdUser());
 		if(msg.getContent()!=null) {
 			letS.createLetter(msg,TokenCookie);
 		}

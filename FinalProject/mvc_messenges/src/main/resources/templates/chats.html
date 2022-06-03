@@ -40,8 +40,8 @@
                             <div th:class="message-one">you have no messages.</div>
                     </div>
                     <form class="messages-form" th:action="@{/chats/sendMsg}" th:object="${newMsg}" method="post">
-                        <input type="hidden" th:field="*{idUser}" th:value="${user.id}" />
-                        <input type="hidden" th:field="*{idChat}" th:value="${chat.id}"/>
+                        <input type="hidden" th:field="*{idUser}" th:value="${newMsg.idUser}" />
+                        <input type="hidden" th:field="*{idChat}" th:value="${newMsg.idChat}"/>
                         <input type="text" th:field="*{content}" />
                         <button class="send" type="submit">Send</button>
                     </form>
