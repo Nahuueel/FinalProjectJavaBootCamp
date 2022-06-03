@@ -6,23 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Create Chat</title>
         <link rel="stylesheet" href="/styles/index.css">
-        <style>
-            .profile{
-                text-decoration: none;
-                color: white;
-            }
-        </style>
     </head>
     <body>
         <div layout:fragment="TITLE">
             <h1>
                 Create Chat
             </h1>
-            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
-                <i>
-                    Go back
-                </i>
-            </a>
         </div>
         <div layout:fragment="BODY">
             <form th:action="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
@@ -42,6 +31,9 @@
                 <button class="button-up" type="submit">
                     Create Chat
                 </button>
+                <a class="button-down" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
+                    Go back
+                </a>
             </form>
         </div>
     </body>

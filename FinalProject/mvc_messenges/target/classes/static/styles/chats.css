@@ -29,9 +29,11 @@
 }
 
 .contact{
+    text-decoration: none;
+    font-size: 1.5em;
+    display: block;
     padding:20px 20px;
     border: 2px solid lightgray;
-    height: 1.5em;
     padding: 5px;
     text-align: center;
     margin: 2.5px;
@@ -117,6 +119,9 @@
 }
 
 .btn-create{
+    text-decoration: none;
+    display: block;
+    color: darkorchid;
     padding: 10px;
     margin-left: 5px;
     font-size: 1.25em;
@@ -147,7 +152,7 @@
     }
     .contacts{
         grid-column: 1/11;
-        grid-row:1/5;
+        grid-row:2/6;
         align-items: center;
     }
     .chat{
@@ -155,6 +160,9 @@
         grid-row:6/13;
     }
     .contact{
+        font-size: 1.25em;
+        display: block;
+        text-decoration: none;
         height: 1.5em;
         width: 14em;
         padding: 5px;
@@ -170,8 +178,7 @@
     }
     .btn-create{
         margin:2px;
-        grid-row:5/6;
-        grid-column:1/11;
+        grid-row:1/2;
     }
 
     .contacts-dropdown span{
@@ -184,7 +191,6 @@
         color: darkorchid;
         border: 2px solid darkorchid;
     }
-
 
     .contacts-content{
         display:none;

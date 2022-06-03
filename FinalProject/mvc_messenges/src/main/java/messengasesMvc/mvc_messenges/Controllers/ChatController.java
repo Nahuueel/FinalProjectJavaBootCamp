@@ -83,9 +83,6 @@ public class ChatController {
 	@PostMapping("/sendMsg")
 	public String sendChat(	@ModelAttribute("newMsg") LetterModel msg,
 							@CookieValue(name = "TokenCookie",required=true) String TokenCookie) {
-		
-		
-		System.out.println(msg.getContent() + msg.getIdChat() + msg.getIdUser());
 		if(msg.getContent()!=null) {
 			letS.createLetter(msg,TokenCookie);
 		}
