@@ -39,18 +39,18 @@ public class ChatController {
         @PathVariable("idUser") long idUser) {
 		
 		UserModel user = userS.getUserById(idUser,TokenCookie); 
-		ArrayList<ChatModel> chats = new ArrayList<>();
+	/*	ArrayList<ChatModel> chats = new ArrayList<>();
 		try{
-			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
+			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user.getId(),TokenCookie);
 		}catch(Exception e){
 			if(e!=null){
 				model.addAttribute("user", user);
 				return"chats.html";
 			}
 		}
-		
+		*/
 		model.addAttribute("user", user);
-		model.addAttribute("chats", chats);
+//		model.addAttribute("chats", chats);
 		return "chats.html";
 	}
 	

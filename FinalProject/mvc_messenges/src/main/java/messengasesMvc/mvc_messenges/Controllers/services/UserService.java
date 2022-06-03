@@ -54,9 +54,13 @@ public class UserService {
 	} 
     
     public boolean createUser(UserModel user) {
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/register"); 
-        ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
-        return response.getBody().equals("User Saved");
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/users/register"); 
+        try {
+        	ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);        	
+        	return response.getBody().equals("User Saved");
+        } catch(Exception e) {
+        	return false;
+        }
     }
 
     public void updateUser(UserModel user, String token) {

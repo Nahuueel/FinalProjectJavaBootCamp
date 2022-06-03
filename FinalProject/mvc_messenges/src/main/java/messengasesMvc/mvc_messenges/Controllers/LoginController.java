@@ -55,12 +55,11 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(@ModelAttribute("user") UserModel userLogin,
-		Model model) {
+	public String signUp(@ModelAttribute("user") UserModel userLogin) {
 		if(userS.createUser(userLogin)) {
-			return "redirect:/login";			
+			return "redirect:/index/login";			
 		}
 		else
-			return "redirect:/signup";
+			return "redirect:/index/signup";
 	}
 }

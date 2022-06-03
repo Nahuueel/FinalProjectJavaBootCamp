@@ -33,8 +33,8 @@ public class ChatService {
 		return response.getBody(); 
 	}
 
-	public List<ChatModel> getChatFromUser(UserModel user, String token){
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
+	public List<ChatModel> getChatFromUser(long user, String token){
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user);
 
         HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(token);
