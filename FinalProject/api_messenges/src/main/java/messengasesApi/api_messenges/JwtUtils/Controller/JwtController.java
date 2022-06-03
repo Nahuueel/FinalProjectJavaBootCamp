@@ -43,6 +43,6 @@ public class JwtController {
 		}
 		final UserDetails userDetail = service.loadUserByUsername(user.getUsername());
 		final String token = tokenManager.generateToken(userDetail);
-		return ResponseEntity.status(200).body(new JwtResponse(token));
+		return ResponseEntity.status(200).body((new JwtResponse(token)).getToken());
 	}
 }

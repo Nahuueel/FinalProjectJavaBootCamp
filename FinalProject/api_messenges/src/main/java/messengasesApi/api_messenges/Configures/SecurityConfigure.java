@@ -32,6 +32,17 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private PasswordEncoder bcrypt;
 
+	 @Override
+	 protected void configure(HttpSecurity http) throws Exception {
+	        http	.cors().disable()
+	        		.csrf().disable()
+	        		.authorizeRequests()
+	                .antMatchers("/swagger-ui/**", "/javainuse-openapi/**","/v3/**").permitAll()
+	                .anyRequest().permitAll()
+	                .and()
+	                .httpBasic();
+	    }
+	
 	@Override
 	public void configure(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
 		authManagerBuilder.userDetailsService(this.userDetail).passwordEncoder(this.bcrypt);
@@ -42,7 +53,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception{
 		return super.authenticationManagerBean();
 	}
-	
+	/*
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http
@@ -61,4 +72,5 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 	}
+	*/
 }
