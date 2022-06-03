@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,8 +20,12 @@ public class UserController {
 	@Autowired
 	private UserService userS;
 	
-	@GetMapping("/profile")
-	public String profileView(@ModelAttribute("user") UserModel userLogin, Model model) {
+	@GetMapping("/profile/{idUser}")
+	public String profileView(	@PathVariable("user") long idUser, 
+								@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
+								Model model) {
+		
+		UserModel userLogin = userS.getUserById(idUser, TokenCookie);
 		model.addAttribute("user", userLogin);
 		return "profile";
 	}
@@ -45,10 +50,4 @@ public class UserController {
 		return "redirect:/index/login";
 	}
 	
-	@PostMapping("/back")
-	public String goBack(Model model, @ModelAttribute("user") UserModel userLogin) {
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat", 1);
-		return "redirect:/chats/principal";
-	}
 }

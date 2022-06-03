@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import messengasesApi.api_messenges.Model.Chats;
 import messengasesApi.api_messenges.Model.Messages;
+import messengasesApi.api_messenges.Model.MessagesList;
 import messengasesApi.api_messenges.Model.Users;
 import messengasesApi.api_messenges.Services.ChatService;
 import messengasesApi.api_messenges.Services.MessageService;
@@ -44,9 +45,10 @@ public class MessageController {
 	}
 	
 	@GetMapping("/byUser/{id_user}")
-	public ResponseEntity<List<Messages>> getAllByUser(@PathVariable("id_user") long id){
-		List<Messages> messages = msgService.getAllByUser(id);
-		if(messages != null)
+	public ResponseEntity<MessagesList> getAllByUser(@PathVariable("id_user") long id){
+		MessagesList messages = new MessagesList();
+		messages.setMsgs(msgService.getAllByUser(id));
+		if(messages.getMsgs() != null)
 			return ResponseEntity.ok().body(messages);
 		else 
 			return ResponseEntity.badRequest().body(messages);

@@ -27,7 +27,7 @@ public class UserService {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/login");
     	try {
 	        ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
-	        return response.getBody();
+	        return response.getBody().toString();
     	} catch(Exception e) {
     		throw new Exception("BAD_CREDENTIALS_EXCEPTION", e);
     	}
