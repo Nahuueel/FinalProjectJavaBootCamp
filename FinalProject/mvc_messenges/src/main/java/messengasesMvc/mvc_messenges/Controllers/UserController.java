@@ -21,7 +21,7 @@ public class UserController {
 	private UserService userS;
 	
 	@GetMapping("/profile/{idUser}")
-	public String profileView(	@PathVariable("user") long idUser, 
+	public String profileView(	@PathVariable("idUser") long idUser, 
 								@CookieValue(name = "TokenCookie",required=true) String TokenCookie,
 								Model model) {
 		
@@ -32,21 +32,20 @@ public class UserController {
 	
 	@PostMapping("/modify")
 	public String modifyUser(@ModelAttribute("user") UserModel userLogin, 
-		@CookieValue(name = "TokenCookie") String userToken,
-		Model model) {
-		model.addAttribute("user", userLogin);
+		@CookieValue(name = "TokenCookie") String userToken) {
+		
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
-			model.addAttribute("idChat", 1);
-			return "redirect:/chats/principal"; 
+			return "redirect:/chats/principal/"+userLogin.getId()+"/0"; 
 		} else 
-			return "redirect:/profile";
+			return "redirect:/users/profile/"+userLogin.getId();
 	}
 	
 	@PostMapping("/delete")
 	public String deleteUser(@ModelAttribute("user")UserModel userLogin,
 	@CookieValue(name = "TokenCookie") String userToken) {
 		userS.deleteUser(userLogin.getId(),userToken);
+		
 		return "redirect:/index/login";
 	}
 	

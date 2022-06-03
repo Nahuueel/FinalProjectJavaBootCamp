@@ -18,14 +18,12 @@
             <h1>
                 Profile
             </h1>
-            <a class="profile" th:href="@{/chats/principal/{idUser} (idUser = {user.id}}">
-                <i>
-                    Go back
-                </i>
-            </a>
+            
         </div>
         <div layout:fragment="BODY">
-             <form th:acction="@{/users/modify}" th:object="${user}" method="post">
+             <form th:action="@{/users/modify}" th:object="${user}" method="post">
+                    <input type="number" th:field="*{id}" hidden>
+                    <input type="checkbox" th:field="*{state}" th:value="${user.state}" hidden>
                     <div class="field-container">
                         <label>
                             FullName
@@ -46,7 +44,7 @@
                     </div>
                     <div class="field-container">
                         <label>Language</label>
-                        <select th:field="*{languaje}">
+                        <select th:field="*{language}">
                             <option th:value="es">Spanish</option>
                             <option th:value="pt">Portuguese</option>
                             <option th:value="en" selected>English</option>
@@ -65,6 +63,9 @@
                     <a class="button-down" th:href="@{/chats/principal(username = ${username})}">
                         Delete
                     </a>
+                    <a class="button-down" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
+		                    Go back   
+		            </a>
             </form>
         </div>
     </body>

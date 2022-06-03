@@ -46,7 +46,19 @@ public class ChatController {
 		
 		try {
 			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
+		} catch(Exception e){
+			model.addAttribute("user", user);
+			return "chats";
+		}
+		try {
 			chat = chatS.getChatById(idChat, TokenCookie);
+		} catch(Exception e) {
+			model.addAttribute("user", user);
+			model.addAttribute("chats", chats);
+			return "chats";
+		}
+		
+		try {
 			letters = (ArrayList<LetterModel>) letS.getLetterByChat(chat, TokenCookie);
 		} catch(Exception e) {
 			model.addAttribute("user", user);
@@ -55,29 +67,25 @@ public class ChatController {
 			model.addAttribute("newMsg", new LetterModel());
 			return "chats";
 		}
-			model.addAttribute("newMsg", new LetterModel());
-			model.addAttribute("chat", chat);
-			model.addAttribute("msg", letters);
-			model.addAttribute("chats", chats);
-			model.addAttribute("user", user);
-			
+		
+		model.addAttribute("newMsg", new LetterModel());
+		model.addAttribute("chat", chat);
+		model.addAttribute("msg", letters);
+		model.addAttribute("chats", chats);
+		model.addAttribute("user", user);
 		return "chats";
+		
 	}
 	
 	@PostMapping("/sendMsg")
-	public String sendChat(@ModelAttribute("newMsg") LetterModel msg, 
-        @ModelAttribute("chats") ChatModel chat, 
-        @ModelAttribute("user") UserModel userLogin, 
-        @CookieValue(name = "TokenCookie",required=true) String TokenCookie,
-        Model model) {
+	public String sendChat(	@ModelAttribute("newMsg") LetterModel msg,
+							@CookieValue(name = "TokenCookie",required=true) String TokenCookie) {
+	
 		if(msg.getContent()!=null) {
-			msg.setChat(chat);
-			msg.setUser(userLogin);
 			letS.createLetter(msg,TokenCookie);
 		}
-		model.addAttribute("user", userLogin);
-		model.addAttribute("idChat",chat.getId());
-		return "redirect:/principal";
+		
+		return "redirect:/chats/principal/"+msg.getIdUser()+"/"+msg.getIdChat();
 	}
 	/*
 	@PostMapping("/profile")
@@ -100,7 +108,7 @@ public class ChatController {
 		if(integrator!=null) {
 			chatS.addIntegrator(chat.getId(), userLogin.getId(), TokenCookie); 
 			chatS.addIntegrator(chat.getId(), integrator.getId(), TokenCookie);
-			return "redirect:/chats/principal/"+userLogin.getId();
+			return "redirect:/chats/principal/"+userLogin.getId()+"/0";
 		} else 
 			return "redirect:/chats/createChat/"+userLogin.getId();	
 		}
@@ -121,7 +129,5 @@ public class ChatController {
 	}
 	
 
-
-	
 	
 }

@@ -18,15 +18,16 @@
             <h1>
                 Create Chat
             </h1>
-            <a class="profile" th:href="@{/chats/principal/{idUser} (idUser = ${user.id})}">
+            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 0)}">
                 <i>
                     Go back
                 </i>
             </a>
         </div>
         <div layout:fragment="BODY">
-            <form th:acction="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
+            <form th:action="@{/chats/createChat}" th:object="${chatDTO}" method="POST">
                 <div class="field-container">
+                <input type="number" th:field="*{idUserC}" th:value="${user.id}" hidden>
                     <label>
                         Name Chat
                     </label>
@@ -36,7 +37,7 @@
                     <label>
                         Username
                     </label>
-                    <input type="text" th:value="*{integratorUsername}"/>
+                    <input type="text" th:field="*{integratorUsername}"/>
                 </div>
                 <button class="button-up" type="submit">
                     Create Chat

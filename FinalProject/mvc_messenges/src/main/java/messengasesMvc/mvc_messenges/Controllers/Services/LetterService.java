@@ -37,7 +37,7 @@ public class LetterService {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
-		ResponseEntity<LettersList> response = fetch.exchange(url.append("/byChat/" + chats.getId()).toString(), HttpMethod.GET ,entity,LettersList.class);
+		ResponseEntity<LettersList> response = fetch.exchange(url.append("/byChat/"+chats.getId()).toString(), HttpMethod.GET ,entity,LettersList.class);
 		return response.getBody().getMsgs();
 	}
 	
@@ -66,7 +66,7 @@ public class LetterService {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
 		HttpEntity<LetterModel> entity = new HttpEntity<>(mensajito,header);
 		header.setBearerAuth(token);
-		ResponseEntity<String> response = fetch.exchange(url.append("/").toString(), HttpMethod.POST ,entity, String.class);
+		ResponseEntity<String> response = fetch.exchange(url.append("/"+mensajito.getIdUser()+"/"+mensajito.getIdChat()).toString(), HttpMethod.POST ,entity, String.class);
 		return response.getBody().equals("Message saved");
 	}
 	

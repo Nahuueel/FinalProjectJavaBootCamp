@@ -10,11 +10,6 @@
     <body>
         <div layout:fragment="TITLE">
             <h1>Chats</h1>
-            <a class="profile" style="color:black" th:href="@{/users/profile/{idUser} (idUser = ${user.id})}">
-                <i>
-                    Profile
-                </i>
-            </a>
         </div>
         <div layout:fragment="BODY">
             <div class="contacts">
@@ -31,6 +26,12 @@
             <a th:href="@{/chats/createChat/{idUser} (idUser = ${user.id})}" class="btn-create">
                 Create Chat
             </a>
+            <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
+                Profile
+            </a>
+            <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
+                LogOut
+            </a>
             <div th:if="${chat != null}" class="chat">   
                     <div th:if="${msg!=null}" class="messages" th:each="message: ${msg}">
                         <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
@@ -39,6 +40,8 @@
                             <div th:class="message-one">you have no messages.</div>
                     </div>
                     <form class="messages-form" th:action="@{/chats/sendMsg}" th:object="${newMsg}" method="post">
+                        <input type="hidden" th:field="*{idUser}" th:value="${user.id}" />
+                        <input type="hidden" th:field="*{idChat}" th:value="${chat.id}"/>
                         <input type="text" th:field="*{content}" />
                         <button class="send" type="submit">Send</button>
                     </form>
