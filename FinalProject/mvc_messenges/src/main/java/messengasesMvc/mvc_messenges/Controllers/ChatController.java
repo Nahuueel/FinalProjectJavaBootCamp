@@ -70,12 +70,13 @@ public class ChatController {
 		return "redirect:/principal";
 	}
 	
+	/* 
 	@PostMapping("/profile")
 	public String profileView(@ModelAttribute("user") UserModel userLogin) {
 		long idUser = userLogin.getId();
 		return "redirect:/users/profile/"+idUser; 
 	}
-	
+	*/
 	@PostMapping("/createChatView")
 	public String goCreateChat(@ModelAttribute("user") UserModel userLogin) {
 		long idUser = userLogin.getId();

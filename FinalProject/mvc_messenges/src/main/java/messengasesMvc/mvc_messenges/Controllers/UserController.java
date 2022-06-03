@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,9 +20,11 @@ public class UserController {
 	@Autowired
 	private UserService userS;
 	
-	@GetMapping("/profile")
-	public String profileView(@ModelAttribute("user") UserModel userLogin, Model model) {
-		model.addAttribute("user", userLogin);
+	@GetMapping("/profile/{idUser}")
+	public String profileView(@PathVariable("idUser") long idUser, Model model,
+		@CookieValue(name = "TokenCookie") String userToken
+	) {
+		model.addAttribute("user", userS.getUserById(idUser, userToken));
 		return "profile";
 	}
 	
@@ -30,6 +33,7 @@ public class UserController {
 		@CookieValue(name = "TokenCookie") String userToken,
 		Model model) {
 		model.addAttribute("user", userLogin);
+		System.out.println(userLogin);
 		if(userLogin.getUsername()!= null && userLogin.getPassword()!=null) {			
 			userS.updateUser(userLogin,userToken);
 			model.addAttribute("idChat", 1);

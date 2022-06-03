@@ -18,14 +18,16 @@
             <h1>
                 Profile
             </h1>
-            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = {user.id}, idChat = 1)}">
+            <a class="profile" th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = 1)}">
                 <i>
                     Go back
                 </i>
             </a>
         </div>
         <div layout:fragment="BODY">
-             <form th:acction="@{/users/modify}" th:object="${user}" method="post">
+             <form th:action="@{/users/modify}" th:object="${user}" method="post">
+                    <input type="number" th:field="*{id}" hidden>
+                    <input type="checkbox" th:field="*{state}" th:value="${user.state}" hidden>
                     <div class="field-container">
                         <label>
                             FullName

@@ -10,11 +10,6 @@
     <body>
         <div layout:fragment="TITLE">
             <h1>Chats</h1>
-            <a class="profile" style="color:black" th:href="@{/profile}">
-                <i>
-                    Profile
-                </i>
-            </a>
         </div>
         <div layout:fragment="BODY">
             <div class="contacts">
@@ -31,6 +26,9 @@
             <a th:href="@{/chats/createChat/{idUser} (idUser = ${user.id})}" class="btn-create">
                 Create Chat
             </a>
+            <a th:href="@{/users/profile/{idUser} (idUser = ${user.id})}" class="btn-create">
+                Profile
+            </a>
             <div th:if="${chat != null}" class="chat">   
                     <div th:if="${msg!=null}" class="messages" th:each="message: ${msg}">
                         <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
@@ -46,7 +44,7 @@
             <div th:if="${chat == null}" class="chat" style="align-items:center;">
                 <div class="contacts-dropdown" >
                     <div th:if="${chat==null}">
-                        <b class="contact">No Chat.</b>
+                        <b class="contact" style="display:block;">No Chat.</b>
                     </div>
                 </div>
             </div>
