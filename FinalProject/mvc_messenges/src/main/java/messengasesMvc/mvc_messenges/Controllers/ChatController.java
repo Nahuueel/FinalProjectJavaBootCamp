@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import messengasesMvc.mvc_messenges.Controllers.Services.ChatService;
 import messengasesMvc.mvc_messenges.Controllers.Services.LetterService;
+import messengasesMvc.mvc_messenges.Controllers.Services.TraductorService;
 import messengasesMvc.mvc_messenges.Controllers.Services.UserService;
 import messengasesMvc.mvc_messenges.Model.ChatModel;
 import messengasesMvc.mvc_messenges.Model.LetterDTO;
@@ -32,6 +33,9 @@ public class ChatController {
 	
 	@Autowired
 	private LetterService letS;
+
+	@Autowired
+	private TraductorService tradS;
 	
 	
 	@GetMapping("/principal/{idUser}/{idChat}")
@@ -44,6 +48,7 @@ public class ChatController {
 		ArrayList<ChatModel> chats = new ArrayList<>();
 		ChatModel chat = null;
 		ArrayList<LetterModel> letters = new ArrayList<>();
+		ArrayList<LetterModel> lettersTrad = new ArrayList<>();
 		LetterDTO letter = new LetterDTO();
 		letter.setIdUser(idUser);
 		letter.setIdChat(idChat);
@@ -56,6 +61,7 @@ public class ChatController {
 		try {
 			chat = chatS.getChatById(idChat, TokenCookie);
 		} catch(Exception e) {
+			System.out.println(e);
 			model.addAttribute("user", user);
 			model.addAttribute("chats", chats);
 			return "chats";
@@ -73,11 +79,23 @@ public class ChatController {
 			model.addAttribute("newMsg", letter);
 			return "chats";
 		}
+
+		try {
+			lettersTrad =  (ArrayList<LetterModel>) tradS.translateLetters(letters,user.getLanguage());
+		} catch(Exception e) {
+			System.out.println(e);
+			model.addAttribute("user", user);
+			model.addAttribute("chats", chats);
+			model.addAttribute("chat", chat);
+			model.addAttribute("newMsg", letter);
+			model.addAttribute("msg", letters);
+			return "chats";
+		}
 		
-		System.out.println("!2!");
+		
 		model.addAttribute("newMsg", letter);
 		model.addAttribute("chat", chat);
-		model.addAttribute("msg", letters);
+		model.addAttribute("msg", lettersTrad);
 		model.addAttribute("chats", chats);
 		model.addAttribute("user", user);
 		return "chats";
@@ -96,13 +114,6 @@ public class ChatController {
 		
 		return "redirect:/chats/principal/"+msg.getIdUser()+"/"+msg.getIdChat();
 	}
-	
-	/* 
-	@PostMapping("/profile")
-	public String profileView(@ModelAttribute("user") UserModel userLogin) {
-		long idUser = userLogin.getId();
-		return "redirect:/users/profile/"+idUser; 
-	}*/
 	
 	@PostMapping("/createChat")
 	public String createChat( 
