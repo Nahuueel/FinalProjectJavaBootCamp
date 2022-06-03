@@ -27,7 +27,6 @@ public class UserService {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/login");
     	ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
         return (response.getBody()).toString(); 
- 
     }
     
     public UserModel getUserById(long id,String token) {
@@ -54,7 +53,7 @@ public class UserService {
 	} 
     
     public boolean createUser(UserModel user) {
-        StringBuilder url = new StringBuilder("http://localhost:8080/api/register"); 
+        StringBuilder url = new StringBuilder("http://localhost:8080/api/users/register"); 
         ResponseEntity<String> response = fetch.postForEntity(url.toString(), user, String.class);
         return response.getBody().equals("User Saved");
     }

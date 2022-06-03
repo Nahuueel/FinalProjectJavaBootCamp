@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{skeletons/skeleton}">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +10,7 @@
     <body>
         <div layout:fragment="TITLE">
             <h1>Chats</h1>
-            <a class="profile" style="color:black" href="./profile.html">
+            <a class="profile" style="color:black" th:href="@{/profile}">
                 <i>
                     Profile
                 </i>
@@ -21,41 +20,31 @@
             <div class="contacts">
                 <div class="contacts-dropdown">
                     <span>Show Contacts</span>                        
-                    <div th:if="${chats==null}">
-                        <div class="contacts-content">
-                            <b class="contact">No Contacts.</b>
-                        </div>
+                    <div th:if="${chats==null}" class="contacts-content" >
+                        <b class="contact">No Contacts.</b>
                     </div>
-                    <div th:if="${chats!=null}">
-                        <div class="contacts-content" th:each="chat: ${chats}">
-                            <a th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = ${chat.id})}" th:text="${chat.name}" class="contact"></a>
-                        </div>
+                    <div th:if="${chats!=null}" class="contacts-content" th:each="chat: ${chats}">
+                        <a th:href="@{/chats/principal/{idUser}/{idChat} (idUser = ${user.id}, idChat = ${chat.id})}" th:text="${chat.name}" class="contact"></a>
                     </div>
                 </div>
-                <a th:href="@{/chats/createChat/{idUser} (idUser = ${user.id})}" class="next-contact">
-                    Create Chat
-                </a>
             </div>
-            <div th:if="${chat!=null}">
-                <div class="chat">   
-                        <div th:if="${msg!=null}">
-                            <div class="messages" th:each="message: ${msg}">
-                                <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
-                            </div>
-                        </div>
-                        <div th:if="${msg==null}">
-                            <div class="messages" th:each="message: ${msg}" th:if="${msg.isEmpty()}">
-                                <div th:class="message-one " th:text="you have no messages"></div>
-                            </div>
-                        </div>
-                        <form class="messages-form" th:acction="@{/chats/sendMsg}" th:object="newMsg" method="post">
-                            <input type="text" th:field="*{content}" />
-                            <button class="send" type="submit">Send</button>
-                        </form>
-                </div>
+            <a th:href="@{/chats/createChat/{idUser} (idUser = ${user.id})}" class="btn-create">
+                Create Chat
+            </a>
+            <div th:if="${chat != null}" class="chat">   
+                    <div th:if="${msg!=null}" class="messages" th:each="message: ${msg}">
+                        <div th:class="${user.username == message.user.username} ? message-one : message-two" th:text="${messaage.content}"></div>
+                    </div>
+                    <div th:if="${msg==null}" class="messages" th:each="message: ${msg}">
+                            <div th:class="message-one " th:text="you have no messages"></div>
+                    </div>
+                    <form class="messages-form" th:acction="@{/chats/sendMsg}" th:object="newMsg" method="post">
+                        <input type="text" th:field="*{content}" />
+                        <button class="send" type="submit">Send</button>
+                    </form>
             </div>
-            <div class="contacts">
-                <div class="contacts-dropdown">
+            <div th:if="${chat == null}" class="chat" style="align-items:center;">
+                <div class="contacts-dropdown" >
                     <div th:if="${chat==null}">
                         <b class="contact">No Chat.</b>
                     </div>

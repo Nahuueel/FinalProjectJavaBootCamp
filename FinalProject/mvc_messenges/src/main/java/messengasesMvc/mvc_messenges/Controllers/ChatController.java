@@ -89,6 +89,7 @@ public class ChatController {
 		UserModel userLogin = userS.getUserById(idUser,TokenCookie);
 		model.addAttribute("integrator", new UserModel());
 		model.addAttribute("user", userLogin);
+		model.addAttribute("chatDto", new createChatDTO());
 		return "create_chats";
 	}
 	
@@ -103,9 +104,9 @@ public class ChatController {
 		long idUser = userLogin.getId();
 		UserModel user2 = userS.getUserByUsername(integrator.getUsername(),TokenCookie);
 		if(user2!=null) {
-			chatS.createChat(chat,TokenCookie);
-			chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
-			chatS.addIntegrator(chat, user2);
+			//chatS.createChat(chat,TokenCookie);
+			//chatS.addIntegrator(chat, userLogin); //falta el service addIntegrator
+			//chatS.addIntegrator(chat, user2);
 			return "redirect:/principal/"+idUser;
 		} else 
 			return "redirect:/createChat/"+idUser;	

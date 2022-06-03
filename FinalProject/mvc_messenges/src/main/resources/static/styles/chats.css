@@ -117,6 +117,9 @@
 }
 
 .btn-create{
+    text-decoration: none;
+    display: block;
+    color: darkorchid;
     padding: 10px;
     margin-left: 5px;
     font-size: 1.25em;
@@ -184,7 +187,6 @@
         color: darkorchid;
         border: 2px solid darkorchid;
     }
-
 
     .contacts-content{
         display:none;

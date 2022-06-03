@@ -58,9 +58,9 @@ public class LoginController {
 	public String signUp(@ModelAttribute("user") UserModel userLogin,
 		Model model) {
 		if(userS.createUser(userLogin)) {
-			return "redirect:/login";			
+			return "redirect:/index/login";			
 		}
 		else
-			return "redirect:/signup";
+			return "redirect:/index/signup";
 	}
 }
