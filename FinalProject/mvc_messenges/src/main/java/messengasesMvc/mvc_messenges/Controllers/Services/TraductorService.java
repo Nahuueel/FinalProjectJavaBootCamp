@@ -23,13 +23,12 @@ public class TraductorService {
     	for(LetterModel letter: letters) {
     		Detection detection = translate.detect(letter.getContent());
     		Translation translation = translate.translate(letter.getContent(),
-    				TranslateOption.sourceLanguage(detection.getLanguage()),
-    				TranslateOption.targetLanguage(lenguage));
-	    		letter.setContent(translation.getTranslatedText());
-	    		translates.add(letter);
+			TranslateOption.sourceLanguage(detection.getLanguage()),
+    		TranslateOption.targetLanguage(lenguage));
+	    	
+			letter.setContent(translation.getTranslatedText());
+	    	translates.add(letter);
     	}
-    	return translates;
-    		
+    	return translates;		
     }
-
 }

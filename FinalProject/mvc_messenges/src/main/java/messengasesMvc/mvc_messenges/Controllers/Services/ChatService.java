@@ -22,15 +22,16 @@ public class ChatService {
 
 	@Autowired
 	private RestTemplate fetch;
+
+	@Autowired
+	private HttpHeaders header;
 	
 	public ChatModel getChatByUser(UserModel user, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
 
-        HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
 		HttpEntity<String> entity = new HttpEntity<>(header);
-
+		header.setBearerAuth(token);
+        
 		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity ,ChatModel.class);
 		return response.getBody(); 
 	}
@@ -38,10 +39,9 @@ public class ChatService {
 	public List<ChatModel> getChatFromUser(UserModel user, String token){
         StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/chatsByUser/").append(user.getId());
 
-        HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-		
-		HttpEntity<String> entity = new HttpEntity<>(header);  
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		ResponseEntity<ChatsList> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET ,entity,ChatsList.class);
 		return response.getBody().getChats();
 	}
@@ -49,10 +49,9 @@ public class ChatService {
 	public List<ChatModel> getUsersByChat(UserModel user, String token){
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/users/usersFromChats/").append(user.getId());
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
 		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 	//	ResponseEntity<> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,Mapper.class);
 		return null; // response.getBody().getListaChats();
 	}
@@ -61,10 +60,9 @@ public class ChatService {
 	public ChatModel getChatById(long id, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/").append(id);
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
 		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(),HttpMethod.GET ,entity,ChatModel.class);
 		return response.getBody();
 	}
@@ -72,21 +70,18 @@ public class ChatService {
 	public void addIntegrator(long chat, long user, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/addUserToChat/").append(user + "/" + chat);
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
 		HttpEntity<String> entity = new HttpEntity<>(header);
-
+		header.setBearerAuth(token);
+        
 		ResponseEntity<String> response = fetch.exchange(url.toString(),HttpMethod.POST, entity, String.class);
 	}
 	
 	public List<LetterModel> getLetterByChat(ChatModel chat, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages/byChat/").append(chat.getId());
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
 		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		ResponseEntity<LettersList> response = fetch.exchange(url.toString(),HttpMethod.GET,entity ,LettersList.class);
 		return response.getBody().getMsgs();
 	}
@@ -94,10 +89,8 @@ public class ChatService {
 	public ChatModel createChat(ChatModel chatcito, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
-		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);  
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
 
 		ResponseEntity<ChatModel> response = fetch.exchange(url.toString(), HttpMethod.POST, entity, ChatModel.class);
 		return response.getBody(); 
@@ -107,20 +100,18 @@ public class ChatService {
 	public void updateChat(ChatModel chatcito, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats");
 
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-
-		HttpEntity<ChatModel> entity = new HttpEntity<>(chatcito,header);
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		fetch.exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
 	}
 	
 	public void deleteChat(long id, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/chats/").append(id);
-		
-		HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
 
 		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		fetch.exchange(url.toString(),HttpMethod.DELETE, entity, String.class);
 	}
 

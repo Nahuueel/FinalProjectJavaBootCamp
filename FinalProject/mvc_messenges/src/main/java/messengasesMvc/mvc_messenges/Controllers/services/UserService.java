@@ -16,6 +16,9 @@ public class UserService {
     
     @Autowired
     private RestTemplate fetch;
+
+    @Autowired
+    private HttpHeaders header;
     
     
     public String login(UserModel user) throws Exception {
@@ -32,10 +35,9 @@ public class UserService {
     public UserModel getUserById(long id,String token) {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/users/").append(id);
 
-        HttpHeaders header = new HttpHeaders();
-        header.add("Authorization", "Bearer " + token);
-		
-        HttpEntity<String> entity = new HttpEntity<>(header);  
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+
         ResponseEntity<UserModel> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET ,entity, UserModel.class);
         return response.getBody();
     }
@@ -43,11 +45,9 @@ public class UserService {
     public UserModel getUserByUsername(String username, String token) {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/users/byUsername/").append(username);
 
-        HttpHeaders header = new HttpHeaders();
-        header.setBearerAuth(token);
-		
-        HttpEntity<String> entity = new HttpEntity<>(header);
-
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
+        
 		ResponseEntity<UserModel> response = new RestTemplate().exchange(url.toString(),HttpMethod.GET, entity, UserModel.class);
 		return response.getBody();
 	} 
@@ -65,10 +65,8 @@ public class UserService {
     public void updateUser(UserModel user, String token) {
         StringBuilder url = new StringBuilder("http://localhost:8080/api/users");
 
-        HttpHeaders header = new HttpHeaders();
-        header.add("Authorization", "Bearer " + token);
-
-		HttpEntity<UserModel> entity = new HttpEntity<>(user,header);
+		HttpEntity<String> entity = new HttpEntity<>(header);
+		header.setBearerAuth(token);
         
         ResponseEntity<String> response = new RestTemplate().exchange(url.toString(),HttpMethod.PUT ,entity, String.class);
         

@@ -52,6 +52,7 @@ public class ChatController {
 		LetterDTO letter = new LetterDTO();
 		letter.setIdUser(idUser);
 		letter.setIdChat(idChat);
+		
 		try {
 			chats = (ArrayList<ChatModel>) chatS.getChatFromUser(user,TokenCookie);
 		} catch(Exception e){
@@ -66,8 +67,6 @@ public class ChatController {
 			model.addAttribute("chats", chats);
 			return "chats";
 		}
-
-		
 		
 		try {
 			letters = (ArrayList<LetterModel>) letS.getLetterByChat(chat, TokenCookie);
@@ -91,7 +90,6 @@ public class ChatController {
 			model.addAttribute("msg", letters);
 			return "chats";
 		}
-		
 		
 		model.addAttribute("newMsg", letter);
 		model.addAttribute("chat", chat);

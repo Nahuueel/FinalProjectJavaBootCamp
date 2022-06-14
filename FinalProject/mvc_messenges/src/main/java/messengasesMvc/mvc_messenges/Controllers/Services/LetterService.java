@@ -48,8 +48,10 @@ public class LetterService {
 
 	public LetterModel getLetterById(long id, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
+		
 		ResponseEntity<LetterModel> response = fetch.exchange(url.append("/" + id).toString(), HttpMethod.GET ,entity,LetterModel.class);
 		return response.getBody();
 	}
@@ -68,7 +70,7 @@ public class LetterService {
 
 	public void updateLetter (LetterModel letter, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
-//		String token = cookie.readCookie("");
+
 		HttpEntity<LetterModel> entity = new HttpEntity<>(letter,header);
 		header.setBearerAuth(token);
 		fetch.exchange(url.toString(), HttpMethod.PUT ,entity, String.class);
@@ -77,7 +79,7 @@ public class LetterService {
 
 	public void deleteLetter(long id, String token) {
 		StringBuilder url = new StringBuilder("http://localhost:8080/api/messages");
-//		String token = cookie.readCookie("");
+
 		HttpEntity<String> entity = new HttpEntity<>(header);
 		header.setBearerAuth(token);
 		fetch.exchange(url.append("/" + id).toString(),HttpMethod.DELETE ,entity,String.class);

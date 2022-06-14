@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CookieValue;
 @Service
 public class CookieService {
 
@@ -22,7 +21,7 @@ public class CookieService {
 
 		response.addCookie(uiTokenCookie);
     }
-
+    
     public void deleteCookie(){
         Cookie uiTokenCookie = new Cookie("TokenCookie",null);
             uiTokenCookie.setMaxAge(0);
